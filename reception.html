@@ -230,7 +230,11 @@ document.getElementById("start-camera")
 
       await scanner.start(
         { facingMode: "environment" },
-        { fps: 10, qrbox: { width: 230, height: 230 } },
+{
+  fps: 15,
+  aspectRatio: 1.777778,
+  disableFlip: true
+},
         async (decodedText) => {
           if (processing) return;
           processing = true;
