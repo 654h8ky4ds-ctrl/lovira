@@ -2,83 +2,14 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
   
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>LOVIRA | لوفيرا للدعوات الذكية</title>
   <meta name="description" content="لوفيرا للدعوات الإلكترونية الفاخرة ودعوات الزواج بباركود دخول خاص لكل ضيفة.">
-  <style>
-    * { box-sizing: border-box; }
-    
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 
-</style>
-<section id="lovira-admin-login" style="padding:30px 20px;max-width:420px;margin:30px auto;text-align:center">
-  <h2>دخول إدارة LOVIRA 🔐</h2>
-  <p>هذه الصفحة مخصصة للمشرفة فقط</p>
-
-  <form id="lovira-login-form">
-    <input id="lovira-email" type="email"
-      placeholder="البريد الإلكتروني"
-      autocomplete="username" required
-      style="width:100%;padding:12px;margin:8px 0">
-
-    <input id="lovira-password" type="password"
-      placeholder="كلمة المرور"
-      autocomplete="current-password" required
-      style="width:100%;padding:12px;margin:8px 0">
-
-    <button type="submit" style="padding:12px 25px">
-      تسجيل الدخول
-    </button>
-  </form>
-
-  <p id="lovira-login-message" role="status"></p>
-</section>
-
-<script>
-const LOVIRA_URL = "https://ddfdkarrcjjcubzoqxce.supabase.co";
-const LOVIRA_PUBLIC_KEY = "sb_publishable_G4b-jueJb1pAE2Kawm-R1Q_Hn7KEfAx";
-
-const loviraClient = window.supabase.createClient(
-  LOVIRA_URL,
-  LOVIRA_PUBLIC_KEY
-);
-
-document.getElementById("lovira-login-form")
-  .addEventListener("submit", async (event) => {
-    event.preventDefault();
-
-    const email = document.getElementById("lovira-email").value.trim();
-    const password = document.getElementById("lovira-password").value;
-    const message = document.getElementById("lovira-login-message");
-
-    message.textContent = "جاري التحقق...";
-
-    const { error } = await loviraClient.auth.signInWithPassword({
-      email,
-      password
-    });
-
-    document.getElementById("lovira-password").value = "";
-
-    if (error) {
-      message.textContent = "تعذر تسجيل الدخول. تأكدي من البيانات.";
-      return;
-    }
-
-    const { data, error: roleError } =
-      await loviraClient.rpc("is_lovira_admin");
-
-    if (roleError || data !== true) {
-      await loviraClient.auth.signOut();
-      message.textContent = "هذا الحساب غير مصرح له بالإدارة.";
-      return;
-    }
-
-    message.textContent = "تم تسجيل دخول المشرفة بنجاح 💜";
-  });
-</script>
   
 <style>
     body {
@@ -233,5 +164,71 @@ document.getElementById("lovira-login-form")
   <footer>
     © 2026 LOVIRA — جميع الحقوق محفوظة
   </footer>
+  <section id="lovira-admin-login" style="padding:30px 20px;max-width:420px;margin:30px auto;text-align:center">
+  <h2>دخول إدارة LOVIRA 🔐</h2>
+  <p>هذه الصفحة مخصصة للمشرفة فقط</p>
+
+  <form id="lovira-login-form">
+    <input id="lovira-email" type="email"
+      placeholder="البريد الإلكتروني"
+      autocomplete="username" required
+      style="width:100%;padding:12px;margin:8px 0">
+
+    <input id="lovira-password" type="password"
+      placeholder="كلمة المرور"
+      autocomplete="current-password" required
+      style="width:100%;padding:12px;margin:8px 0">
+
+    <button type="submit" style="padding:12px 25px">
+      تسجيل الدخول
+    </button>
+  </form>
+
+  <p id="lovira-login-message" role="status"></p>
+</section>
+
+<script>
+const LOVIRA_URL = "https://ddfdkarrcjjcubzoqxce.supabase.co";
+const LOVIRA_PUBLIC_KEY = "sb_publishable_G4b-jueJb1pAE2Kawm-R1Q_Hn7KEfAx";
+
+const loviraClient = window.supabase.createClient(
+  LOVIRA_URL,
+  LOVIRA_PUBLIC_KEY
+);
+
+document.getElementById("lovira-login-form")
+  .addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const email = document.getElementById("lovira-email").value.trim();
+    const password = document.getElementById("lovira-password").value;
+    const message = document.getElementById("lovira-login-message");
+
+    message.textContent = "جاري التحقق...";
+
+    const { error } = await loviraClient.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    document.getElementById("lovira-password").value = "";
+
+    if (error) {
+      message.textContent = "تعذر تسجيل الدخول. تأكدي من البيانات.";
+      return;
+    }
+
+    const { data, error: roleError } =
+      await loviraClient.rpc("is_lovira_admin");
+
+    if (roleError || data !== true) {
+      await loviraClient.auth.signOut();
+      message.textContent = "هذا الحساب غير مصرح له بالإدارة.";
+      return;
+    }
+
+    message.textContent = "تم تسجيل دخول المشرفة بنجاح 💜";
+  });
+</script>
 </body>
 </html>
