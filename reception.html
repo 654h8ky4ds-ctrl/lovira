@@ -1,0 +1,316 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LOVIRA | استقبال الضيفات</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #120b20;
+      color: #f8f1ff;
+      font-family: Tahoma, Arial, sans-serif;
+      text-align: center;
+    }
+    main {
+      max-width: 520px;
+      margin: auto;
+      padding: 35px 18px;
+    }
+    h1, h2 { color: #e6c98b; }
+    .card {
+      padding: 25px 18px;
+      margin: 20px 0;
+      border: 1px solid #80628d;
+      border-radius: 20px;
+      background: #241633;
+    }
+    input, button {
+      width: 100%;
+      padding: 15px;
+      margin: 9px 0;
+      border-radius: 12px;
+      font-size: 16px;
+    }
+    input {
+      background: white;
+      color: #21152d;
+      border: 1px solid #80628d;
+    }
+    button {
+      background: #e6c98b;
+      color: #21152d;
+      border: 0;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+    [hidden] { display: none !important; }
+    #reader {
+      width: 100%;
+      overflow: hidden;
+      background: white;
+      color: black;
+      border-radius: 12px;
+    }
+    #result {
+      padding: 16px;
+      margin-top: 15px;
+      border-radius: 12px;
+      white-space: pre-line;
+    }
+    .success { background: #185c39; }
+    .error { background: #762a39; }
+    .notice { background: #45345b; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>👑 LOVIRA</h1>
+  <p>نظام استقبال الضيفات 🎟️</p>
+
+  <section id="login-box" class="card">
+    <h2>دخول موظفة الاستقبال</h2>
+    <form id="login-form">
+      <input id="email" type="email"
+        placeholder="البريد الإلكتروني"
+        autocomplete="username" required>
+      <input id="password" type="password"
+        placeholder="كلمة المرور"
+        autocomplete="current-password" required>
+      <button id="login-btn" type="submit">
+        تسجيل الدخول
+      </button>
+    </form>
+    <p id="login-message" role="status"></p>
+  </section>
+
+  <section id="reception-box" class="card" hidden>
+    <h2>🎟️ لوحة الاستقبال</h2>
+    <p id="employee-name"></p>
+    <p>اختاري المناسبة المكلفة بها</p>
+    <select id="event-select"
+      style="width:100%;padding:14px">
+    </select>
+
+    <button id="start-camera">
+      📷 تشغيل الكاميرا
+    </button>
+    <button id="stop-camera" disabled>
+      إيقاف الكاميرا
+    </button>
+
+    <div id="reader"></div>
+    <div id="result" role="status"></div>
+
+    <button id="logout">تسجيل الخروج</button>
+  </section>
+</main>
+
+<script>
+const URL_SUPABASE =
+  "https://ddfdkarrcijcubzoqxce.supabase.co";
+
+const PUBLIC_KEY =
+  "sb_publishable_G4b-jueJb1pAE2Kawm-R1Q_Hn7KEfAx";
+
+const db = window.supabase.createClient(
+  URL_SUPABASE,
+  PUBLIC_KEY,
+  {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+      detectSessionInUrl: false
+    }
+  }
+);
+
+const loginBox = document.getElementById("login-box");
+const receptionBox = document.getElementById("reception-box");
+const eventSelect = document.getElementById("event-select");
+const result = document.getElementById("result");
+
+let scanner = null;
+let scanning = false;
+let processing = false;
+
+function showResult(message, type = "notice") {
+  result.className = type;
+  result.textContent = message;
+}
+
+async function showReception() {
+  const { data: userData, error: userError } =
+    await db.auth.getUser();
+
+  if (userError || !userData.user) {
+    throw new Error("يرجى تسجيل الدخول");
+  }
+
+  const { data, error } = await db
+    .from("lovira_receptionists")
+    .select("event_id, is_active")
+    .eq("user_id", userData.user.id)
+    .eq("is_active", true);
+
+  if (error) throw error;
+
+  if (!data || data.length === 0) {
+    throw new Error("لا توجد مناسبة مفعلة لهذا الحساب");
+  }
+
+  eventSelect.replaceChildren();
+
+  for (const assignment of data) {
+    const option = document.createElement("option");
+    option.value = assignment.event_id;
+    option.textContent = "مناسبة رقم " +
+      assignment.event_id.slice(0, 8);
+    eventSelect.appendChild(option);
+  }
+
+  document.getElementById("employee-name")
+    .textContent = userData.user.email;
+
+  loginBox.hidden = true;
+  receptionBox.hidden = false;
+}
+
+document.getElementById("login-form")
+  .addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const button = document.getElementById("login-btn");
+    const message = document.getElementById("login-message");
+    button.disabled = true;
+    message.textContent = "جاري تسجيل الدخول...";
+
+    try {
+      const email =
+        document.getElementById("email").value.trim();
+      const password =
+        document.getElementById("password").value;
+
+      const { error } =
+        await db.auth.signInWithPassword({
+          email, password
+        });
+
+      if (error) throw error;
+
+      document.getElementById("password").value = "";
+      await showReception();
+      message.textContent = "";
+    } catch (error) {
+      await db.auth.signOut();
+      message.textContent = error.message;
+    } finally {
+      button.disabled = false;
+    }
+  });
+
+document.getElementById("start-camera")
+  .addEventListener("click", async () => {
+    if (scanning) return;
+
+    try {
+      if (typeof Html5Qrcode === "undefined") {
+        throw new Error("تعذر تحميل مكتبة الكاميرا");
+      }
+
+      scanner = new Html5Qrcode("reader");
+
+      await scanner.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: { width: 230, height: 230 } },
+        async (decodedText) => {
+          if (processing) return;
+          processing = true;
+
+          try {
+            const token = decodedText.trim();
+
+            const { data, error } = await db.rpc(
+              "lovira_scan_ticket",
+              { p_token: token }
+            );
+
+            if (error) throw error;
+
+            const status = data?.status;
+
+            if (status === "success") {
+              showResult(
+                "✅ مسموح بالدخول\n" +
+                (data.guest_name || ""),
+                "success"
+              );
+            } else {
+              showResult(
+                "❌ " + (data?.message || "دعوة غير صالحة"),
+                "error"
+              );
+            }
+
+            // إيقاف المسح بعد كل محاولة
+            await stopScanner();
+
+          } catch (error) {
+            showResult(
+              "تعذر التحقق: " + error.message,
+              "error"
+            );
+            await stopScanner();
+          } finally {
+            processing = false;
+          }
+        },
+        () => {}
+      );
+
+      scanning = true;
+      document.getElementById("start-camera").disabled = true;
+      document.getElementById("stop-camera").disabled = false;
+      showResult("وجهي الكاميرا نحو الباركود");
+
+    } catch (error) {
+      showResult(error.message, "error");
+    }
+  });
+
+async function stopScanner() {
+  if (scanner && scanning) {
+    try {
+      await scanner.stop();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  scanning = false;
+  document.getElementById("start-camera").disabled = false;
+  document.getElementById("stop-camera").disabled = true;
+}
+
+document.getElementById("stop-camera")
+  .addEventListener("click", stopScanner);
+
+document.getElementById("logout")
+  .addEventListener("click", async () => {
+    await stopScanner();
+    await db.auth.signOut();
+    receptionBox.hidden = true;
+    loginBox.hidden = false;
+    showResult("");
+  });
+</script>
+</body>
+</html>
