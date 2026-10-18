@@ -310,8 +310,9 @@ document.getElementById("lovira-logout")
     await loviraClient.rpc("is_lovira_admin");
 
   if (!roleError && isAdmin === true) {
-    dashboard.hidden = false;
-  }
+  dashboard.hidden = false;
+  dashboard.style.display = "block";
+}
 }
 
 loviraCheckSession(); 
