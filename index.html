@@ -315,6 +315,41 @@ document.getElementById("lovira-logout")
 }
 
 loviraCheckSession(); 
+  document.getElementById("lovira-event-form")
+  .addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const message = document.getElementById("lovira-event-message");
+    message.textContent = "جاري حفظ المناسبة...";
+
+    const { data: isAdmin, error: roleError } =
+      await loviraClient.rpc("is_lovira_admin");
+
+    if (roleError || isAdmin !== true) {
+      message.textContent = "غير مصرح لك بإنشاء المناسبات.";
+      return;
+    }
+
+    const eventName = document.getElementById("event-name").value.trim();
+    const eventDate = document.getElementById("event-date").value;
+    const venue = document.getElementById("event-venue").value.trim();
+
+    const { error } = await loviraClient
+      .from("lovira_events")
+      .insert({
+        event_name: eventName,
+        event_date: eventDate,
+        venue: venue
+      });
+
+    if (error) {
+      message.textContent = "تعذر حفظ المناسبة: " + error.message;
+      return;
+    }
+
+    message.textContent = "تم إنشاء المناسبة بنجاح 💜";
+    event.target.reset();
+  });
 </script>
 </body>
 </html>
