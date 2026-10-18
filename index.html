@@ -577,9 +577,16 @@ async function initializeLovira() {
 
   try {
     loviraClient = window.supabase.createClient(
-      LOVIRA_URL,
-      LOVIRA_PUBLIC_KEY
-    );
+  LOVIRA_URL,
+  LOVIRA_PUBLIC_KEY,
+  {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+      detectSessionInUrl: false
+    }
+  }
+);
 
     loviraClient.auth.onAuthStateChange(
       (event) => {
