@@ -231,6 +231,31 @@ message.textContent = "خطأ تسجيل الدخول: " + error.message;
 
     message.textContent = "تم تسجيل دخول المشرفة بنجاح 💜";
   });
+  
+loviraClient.auth.onAuthStateChange(async (event) => {
+  if (event !== "PASSWORD_RECOVERY") return;
+
+  const newPassword = prompt("أدخلي كلمة المرور الجديدة (6 أحرف على الأقل):");
+
+  if (!newPassword) return;
+
+  if (newPassword.length < 6) {
+    alert("كلمة المرور قصيرة جدًا");
+    return;
+  }
+
+  const { error } = await loviraClient.auth.updateUser({
+    password: newPassword
+  });
+
+  if (error) {
+    alert("تعذر تغيير كلمة المرور: " + error.message);
+  } else {
+    alert("تم تغيير كلمة المرور بنجاح");
+    await loviraClient.auth.signOut();
+  }
+});
+
 </script>
 </body>
 </html>
