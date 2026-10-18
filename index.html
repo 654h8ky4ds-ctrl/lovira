@@ -198,7 +198,19 @@
   </button>
 
   <h3>💍 إدارة المناسبات</h3>
-  <p>هنا سنضيف إنشاء المناسبات وإدارتها.</p>
+<form id="lovira-event-form">
+  <input id="event-name" type="text"
+    placeholder="اسم المناسبة" required>
+
+  <input id="event-date" type="date" required>
+
+  <input id="event-venue" type="text"
+    placeholder="مكان المناسبة" required>
+
+  <button type="submit">💍 إنشاء المناسبة</button>
+</form>
+
+<p id="lovira-event-message" role="status"></p>
 
   <h3>💌 إدارة الضيفات</h3>
   <p>هنا سنضيف أسماء الضيفات ورموز QR.</p>
