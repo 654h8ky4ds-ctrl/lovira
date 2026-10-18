@@ -405,9 +405,59 @@
 
   <h3>💌 إدارة الضيفات</h3>
 
-  <p>
-    هنا سنضيف أسماء الضيفات ورموز QR.
+  
+<div id="lovira-guests-manager">
+
+  <h3>💜 إضافة ضيفة جديدة</h3>
+
+  <form id="lovira-guest-form">
+
+    <label for="guest-event">
+      اختاري المناسبة
+    </label>
+
+    <select
+      id="guest-event"
+      class="admin-input"
+      required>
+      <option value="">
+        جاري تحميل المناسبات...
+      </option>
+    </select>
+
+    <label for="guest-name">
+      اسم الضيفة
+    </label>
+
+    <input
+      id="guest-name"
+      class="admin-input"
+      type="text"
+      placeholder="اكتبي اسم الضيفة"
+      required
+    >
+
+    <button
+      type="submit"
+      class="admin-button">
+      💌 إضافة الضيفة
+    </button>
+
+  </form>
+
+  <p
+    id="lovira-guest-message"
+    role="status">
   </p>
+
+  <h3>🎟️ قائمة الضيفات</h3>
+
+  <div id="lovira-guests-list">
+    ستظهر الضيفات هنا.
+  </div>
+
+</div>
+
 
 </section>
 
