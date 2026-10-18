@@ -229,12 +229,11 @@ document.getElementById("start-camera")
       scanner = new Html5Qrcode("reader");
 
       await scanner.start(
-        { facingMode: "environment" },
-{
-  fps: 15,
-  aspectRatio: 1.777778,
-  disableFlip: true
-},
+  { facingMode: "environment" },
+  {
+    fps: 10,
+    qrbox: { width: 230, height: 230 }
+  },
         async (decodedText) => {
           if (processing) return;
           processing = true;
