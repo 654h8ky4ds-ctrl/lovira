@@ -516,6 +516,7 @@ function showDashboard(userId) {
   authorizedAdminId = userId;
   loginSection.hidden = true;
   dashboard.hidden = false;
+  loadLoviraEvents();
 }
 
 async function verifyAdmin() {
@@ -766,6 +767,38 @@ eventForm.addEventListener(
     }
   }
 );
+
+async function loadLoviraEvents() {
+  const select = document.getElementById("guest-event");
+
+  if (!select || !loviraClient || !authorizedAdminId) {
+    return;
+  }
+
+  select.replaceChildren(new Option("جاري تحميل المناسبات...", ""));
+
+  const { data, error } = await loviraClient
+    .from("lovira_events")
+    .select("id, event_name, event_date")
+    .order("event_date", { ascending: false });
+
+  select.replaceChildren(
+    new Option("اختاري المناسبة", "")
+  );
+
+  if (error) {
+    document.getElementById("lovira-guest-message")
+      .textContent = "تعذر تحميل المناسبات: " + error.message;
+    return;
+  }
+
+  for (const item of data || []) {
+    select.add(new Option(
+      item.event_name + " - " + item.event_date,
+      item.id
+    ));
+  }
+}
 
 initializeLovira();
 </script>
