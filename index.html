@@ -257,7 +257,9 @@ message.textContent = "خطأ تسجيل الدخول: " + error.message;
       message.textContent = "هذا الحساب غير مصرح له بالإدارة.";
       return;
     }
-
+const dashboard = document.getElementById("lovira-dashboard");
+dashboard.hidden = false;
+dashboard.style.display = "block";
     message.textContent = "تم تسجيل دخول المشرفة بنجاح 💜";
   });
  document.getElementById("lovira-dashboard").hidden = false; 
