@@ -1,0 +1,183 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LOVIRA | دعوتكم الخاصة</title>
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Georgia, Tahoma, serif;
+  background: #f5eee5;
+  color: #513b36;
+}
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 25px;
+  background:
+    radial-gradient(circle at top, #fffaf3, transparent 65%),
+    #eee1d2;
+}
+
+.envelope {
+  width: min(100%, 390px);
+  min-height: 570px;
+  background: linear-gradient(145deg, #765044, #38241f);
+  border: 2px solid #cba66c;
+  border-radius: 22px;
+  box-shadow: 0 20px 60px #38241f55;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity .7s, transform .7s;
+}
+
+.envelope::before {
+  content: "";
+  position: absolute;
+  inset: 15px;
+  border: 1px solid #cba66c77;
+  border-radius: 15px;
+  pointer-events: none;
+}
+
+.envelope h1 {
+  color: #e7c894;
+  letter-spacing: 4px;
+  font-size: 30px;
+}
+
+.seal {
+  width: 115px;
+  height: 115px;
+  border-radius: 45%;
+  border: 5px double #a97930;
+  background: radial-gradient(circle, #ffe5a2, #c58b37 70%);
+  box-shadow: 0 8px 22px #0007;
+  color: #795020;
+  font-size: 49px;
+  cursor: pointer;
+  margin: 45px 0 25px;
+  transition: transform .3s;
+}
+
+.seal:active { transform: scale(.93); }
+
+.hint { color: #f1ddc1; }
+
+.invitation {
+  display: none;
+  width: min(100%, 430px);
+  min-height: 650px;
+  padding: 55px 25px;
+  border: 2px solid #c9a66c;
+  border-radius: 20px;
+  background: #fffaf2;
+  text-align: center;
+  box-shadow: 0 15px 45px #5b3c3022;
+  animation: reveal 1s ease both;
+}
+
+.invitation h1 {
+  color: #a4773b;
+  font-size: 30px;
+}
+
+.names {
+  font-size: 35px;
+  color: #63403c;
+  margin: 35px 0;
+  line-height: 1.8;
+}
+
+.divider {
+  width: 90px;
+  height: 1px;
+  background: #c9a66c;
+  margin: 25px auto;
+}
+
+.details { line-height: 2.5; }
+
+@keyframes reveal {
+  from { opacity: 0; transform: translateY(35px) scale(.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <section class="envelope" id="envelope">
+    <h1>LOVIRA</h1>
+    <button class="seal" id="openBtn"
+      aria-label="فتح الدعوة">✿</button>
+    <p class="hint">اضغطي على الختم لفتح الدعوة</p>
+  </section>
+
+  <section class="invitation" id="invitation">
+    <p>بكل الحب والفرح</p>
+    <h1>دعوة زفاف</h1>
+    <div class="divider"></div>
+
+    <p>يسعدنا دعوتكم لمشاركتنا فرحتنا بزفاف</p>
+
+    <div class="names">
+      أحمد
+      <br>
+      &
+      <br>
+      سارة
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="details">
+      <p>يوم الخميس</p>
+      <p>25 ديسمبر 2026</p>
+      <p>الساعة 8:00 مساءً</p>
+      <p>قاعة الأفراح</p>
+    </div>
+
+    <p>حضوركم يزيد فرحتنا جمالًا ♡</p>
+  </section>
+
+</div>
+
+<script>
+document.getElementById("openBtn")
+  .addEventListener("click", function () {
+    const envelope = document.getElementById("envelope");
+    const invitation = document.getElementById("invitation");
+
+    envelope.style.opacity = "0";
+    envelope.style.transform = "scale(.9)";
+
+    setTimeout(() => {
+      envelope.style.display = "none";
+      invitation.style.display = "block";
+    }, 700);
+  });
+</script>
+
+</body>
+</html>
