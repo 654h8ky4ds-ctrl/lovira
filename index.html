@@ -285,6 +285,24 @@ document.getElementById("lovira-logout")
     document.getElementById("lovira-login-message").textContent =
       "تم تسجيل الخروج بنجاح 💜";
   });
+ async function loviraCheckSession() {
+  const dashboard = document.getElementById("lovira-dashboard");
+  dashboard.hidden = true;
+
+  const { data: { session }, error } =
+    await loviraClient.auth.getSession();
+
+  if (error || !session) return;
+
+  const { data: isAdmin, error: roleError } =
+    await loviraClient.rpc("is_lovira_admin");
+
+  if (!roleError && isAdmin === true) {
+    dashboard.hidden = false;
+  }
+}
+
+loviraCheckSession(); 
 </script>
 </body>
 </html>
