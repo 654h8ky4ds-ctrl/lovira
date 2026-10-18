@@ -918,7 +918,46 @@ async function loadLoviraGuests() {
       ? "تم استخدام الدعوة ✅"
       : "الدعوة غير مستخدمة 🎟️";
 
-    card.append(name, status);
+
+const qrCanvas = document.createElement("canvas");
+qrCanvas.style.display = "block";
+qrCanvas.style.margin = "15px auto";
+qrCanvas.style.maxWidth = "100%";
+
+const downloadButton = document.createElement("button");
+downloadButton.type = "button";
+downloadButton.className = "admin-button";
+downloadButton.textContent = "📥 تحميل الباركود";
+downloadButton.disabled = true;
+
+card.append(name, status, qrCanvas, downloadButton);
+
+try {
+  if (!guest.qr_token) {
+    throw new Error("رمز الدعوة غير موجود");
+  }
+
+  await QRCode.toCanvas(qrCanvas, guest.qr_token, {
+    width: 240,
+    margin: 2,
+    errorCorrectionLevel: "M"
+  });
+
+  downloadButton.disabled = false;
+
+  downloadButton.addEventListener("click", () => {
+    const link = document.createElement("a");
+    link.download = "LOVIRA-" + guest.id + ".png";
+    link.href = qrCanvas.toDataURL("image/png");
+    link.click();
+  });
+
+} catch (error) {
+  const errorText = document.createElement("p");
+  errorText.textContent = "تعذر إنشاء الباركود";
+  card.appendChild(errorText);
+}
+
     list.appendChild(card);
   }
 }
