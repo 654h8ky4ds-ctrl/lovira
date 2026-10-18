@@ -272,7 +272,19 @@ loviraClient.auth.onAuthStateChange(async (event) => {
     await loviraClient.auth.signOut();
   }
 });
+document.getElementById("lovira-logout")
+  .addEventListener("click", async () => {
+    const { error } = await loviraClient.auth.signOut();
 
+    if (error) {
+      alert("تعذر تسجيل الخروج: " + error.message);
+      return;
+    }
+
+    document.getElementById("lovira-dashboard").hidden = true;
+    document.getElementById("lovira-login-message").textContent =
+      "تم تسجيل الخروج بنجاح 💜";
+  });
 </script>
 </body>
 </html>
