@@ -862,6 +862,7 @@ document.getElementById("lovira-guest-form")
       }
 
       message.textContent = "تمت إضافة الضيفة بنجاح 💜";
+      await loadLoviraGuests();
       document.getElementById("guest-name").value = "";
 
     } catch (error) {
