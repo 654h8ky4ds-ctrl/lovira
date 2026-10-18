@@ -959,8 +959,11 @@ try {
 
 } catch (error) {
   const errorText = document.createElement("p");
-  errorText.textContent = "تعذر إنشاء الباركود";
+  errorText.style.color = "#ffaaaa";
+  errorText.textContent =
+    "خطأ الباركود: " + (error?.message || String(error));
   card.appendChild(errorText);
+  console.error("LOVIRA QR ERROR:", error);
 }
 
     list.appendChild(card);
