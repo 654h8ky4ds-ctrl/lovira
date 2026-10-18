@@ -800,6 +800,77 @@ async function loadLoviraEvents() {
   }
 }
 
+document.getElementById("lovira-guest-form")
+  .addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const message =
+      document.getElementById("lovira-guest-message");
+
+    const button =
+      event.target.querySelector('button[type="submit"]');
+
+    const eventId =
+      document.getElementById("guest-event").value;
+
+    const guestName =
+      document.getElementById("guest-name").value.trim();
+
+    if (!loviraClient || !authorizedAdminId) {
+      message.textContent = "يجب تسجيل دخول المشرفة أولًا.";
+      return;
+    }
+
+    if (!eventId || !guestName) {
+      message.textContent = "اختاري المناسبة واكتبي اسم الضيفة.";
+      return;
+    }
+
+    button.disabled = true;
+    message.textContent = "جاري إضافة الضيفة...";
+
+    try {
+      const { data: userData, error: userError } =
+        await loviraClient.auth.getUser();
+
+      if (userError ||
+          userData?.user?.id !== authorizedAdminId) {
+        message.textContent = "انتهت صلاحية الجلسة.";
+        showLogin();
+        return;
+      }
+
+      const { data: isAdmin, error: roleError } =
+        await loviraClient.rpc("is_lovira_admin");
+
+      if (roleError || isAdmin !== true) {
+        message.textContent = "غير مصرح لك بإضافة الضيفات.";
+        return;
+      }
+
+      const { error } = await loviraClient
+        .from("lovira_guests")
+        .insert({
+          event_id: eventId,
+          guest_name: guestName
+        });
+
+      if (error) {
+        message.textContent =
+          "تعذر إضافة الضيفة: " + error.message;
+        return;
+      }
+
+      message.textContent = "تمت إضافة الضيفة بنجاح 💜";
+      document.getElementById("guest-name").value = "";
+
+    } catch (error) {
+      message.textContent = "حدث خطأ أثناء إضافة الضيفة.";
+    } finally {
+      button.disabled = false;
+    }
+  });
+
 initializeLovira();
 </script>
 
