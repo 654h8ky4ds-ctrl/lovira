@@ -871,6 +871,57 @@ document.getElementById("lovira-guest-form")
     }
   });
 
+async function loadLoviraGuests() {
+  const list = document.getElementById("lovira-guests-list");
+  const eventId = document.getElementById("guest-event").value;
+
+  list.replaceChildren();
+
+  if (!loviraClient || !authorizedAdminId || !eventId) {
+    list.textContent = "اختاري المناسبة لعرض الضيفات.";
+    return;
+  }
+
+  list.textContent = "جاري تحميل الضيفات...";
+
+  const { data, error } = await loviraClient
+    .from("lovira_guests")
+    .select("id, guest_name, qr_token, is_used")
+    .eq("event_id", eventId)
+    .order("created_at", { ascending: true });
+
+  if (error) {
+    list.textContent = "تعذر تحميل الضيفات: " + error.message;
+    return;
+  }
+
+  list.replaceChildren();
+
+  if (!data || data.length === 0) {
+    list.textContent = "لا توجد ضيفات لهذه المناسبة.";
+    return;
+  }
+
+  for (const guest of data) {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    const name = document.createElement("h3");
+    name.textContent = guest.guest_name;
+
+    const status = document.createElement("p");
+    status.textContent = guest.is_used
+      ? "تم استخدام الدعوة ✅"
+      : "الدعوة غير مستخدمة 🎟️";
+
+    card.append(name, status);
+    list.appendChild(card);
+  }
+}
+
+document.getElementById("guest-event")
+  .addEventListener("change", loadLoviraGuests);
+
 initializeLovira();
 </script>
 
