@@ -144,10 +144,7 @@ body {
 }
 </style>
   <div class="lovira-new-design">
-    <div id="loviraCountdown" style="text-align:center;padding:25px 10px;background:#f5e9df;color:#813d48;font-size:22px;border-radius:15px;margin:12px 0;">
-  <div style="font-size:17px;margin-bottom:10px;">العد التنازلي لحفل زفاف عايش</div>
-  <div id="loviraTimer">جاري حساب الوقت...</div>
-</div>
+    
 <img
   src="02_envelope.jpg"
   alt="اضغطي لفتح الظرف"
@@ -162,7 +159,17 @@ body {
   id="loviraOpened"
   style="display:none;"
 >
- <img src="04_countdown.jpg" alt="العد التنازلي">
+<div id="loviraCountdown" style="position:relative;width:100%;">
+  <img src="04_countdown.jpg" alt="العد التنازلي" style="width:100%;display:block;">
+
+  <div id="loviraTimer"
+     style="position:absolute;top:36%;left:0;width:100%;display:flex;justify-content:space-around;align-items:center;direction:rtl;color:#813f35;font-size:clamp(16px,5vw,32px);font-weight:bold;">
+  <span id="loviraDays">00</span>
+  <span id="loviraHours">00</span>
+  <span id="loviraMinutes">00</span>
+  <span id="loviraSeconds">00</span>
+</div>
+</div>
 <img src="05_event_details.jpg" alt="تفاصيل الحفل">
 <style>
 #loviraQrSection {
@@ -215,8 +222,17 @@ function updateLoviraCountdown() {
   const minutes = Math.floor((difference / 60000) % 60);
   const seconds = Math.floor((difference / 1000) % 60);
 
-  timer.textContent =
-    `${days} يوم | ${hours} ساعة | ${minutes} دقيقة | ${seconds} ثانية`;
+  document.getElementById("loviraDays").textContent =
+  String(days).padStart(2, "0");
+
+document.getElementById("loviraHours").textContent =
+  String(hours).padStart(2, "0");
+
+document.getElementById("loviraMinutes").textContent =
+  String(minutes).padStart(2, "0");
+
+document.getElementById("loviraSeconds").textContent =
+  String(seconds).padStart(2, "0");
 }
 
 updateLoviraCountdown();
