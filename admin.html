@@ -191,21 +191,19 @@ document.getElementById("loviraGuestForm")
 
     message.textContent = "جارٍ إضافة الضيفة...";
 
-    const { data: events, error: eventError } = await db
-      .from("lovira_events")
-      .select("id")
-      .limit(2);
+    
+const eventId = document.getElementById("loviraEventSelect").value;
 
-    if (eventError || !events || events.length !== 1) {
-      message.textContent =
-        "لازم نحدد المناسبة أولًا قبل إضافة الضيفة.";
-      return;
-    }
+if (!eventId) {
+  message.textContent = "اختاري المناسبة أولًا.";
+  return;
+}
+
 
     const { error } = await db
       .from("lovira_guests")
       .insert({
-        event_id: events[0].id,
+event_id: eventId,
         guest_name: guestName,
         companions: companions
       });
