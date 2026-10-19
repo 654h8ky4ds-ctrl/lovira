@@ -178,6 +178,78 @@ document.getElementById("openBtn")
     }, 700);
   });
 </script>
+<style>
+.lovira-new-design {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+}
 
+.lovira-new-design img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+</style>
+  <div class="lovira-new-design">
+  <img src="01_cover.jpg" alt="دعوة زفاف عايش">
+    <div id="loviraCountdown" style="text-align:center;padding:25px 10px;background:#f5e9df;color:#813d48;font-size:22px;border-radius:15px;margin:12px 0;">
+  <div style="font-size:17px;margin-bottom:10px;">العد التنازلي لحفل زفاف عايش</div>
+  <div id="loviraTimer">جاري حساب الوقت...</div>
+</div>
+<img
+  src="02_envelope.jpg"
+  alt="اضغطي لفتح الظرف"
+  id="loviraEnvelope"
+  onclick="openLoviraEnvelope()"
+  style="cursor:pointer;"
+>
+
+<img
+  src="03_music.jpg"
+  alt="بطاقة الدعوة والموسيقى"
+  id="loviraOpened"
+  style="display:none;"
+>
+ <img
+  src="05_event_details.jpg"
+  alt="تفاصيل زفاف عايش في السعيرة يوم 27 نوفمبر الساعة 7 مساءً"
+style="width:100%;display:none;"
+>
+  </div>
+<script>
+function openLoviraEnvelope() {
+  document.getElementById("loviraEnvelope").style.display = "none";
+  document.getElementById("loviraOpened").style.display = "block";
+document.querySelector('img[src="05_event_details.jpg"]').style.display = "block";
+}
+
+</script>
+  <script>
+function updateLoviraCountdown() {
+  const weddingDate = new Date("2026-11-27T19:00:00+03:00");
+  const now = new Date();
+  const difference = weddingDate - now;
+  const timer = document.getElementById("loviraTimer");
+
+  if (!timer) return;
+
+  if (difference <= 0) {
+    timer.textContent = "حان موعد حفل الزفاف 💗";
+    return;
+  }
+
+  const days = Math.floor(difference / 86400000);
+  const hours = Math.floor((difference / 3600000) % 24);
+  const minutes = Math.floor((difference / 60000) % 60);
+  const seconds = Math.floor((difference / 1000) % 60);
+
+  timer.textContent =
+    `${days} يوم | ${hours} ساعة | ${minutes} دقيقة | ${seconds} ثانية`;
+}
+
+updateLoviraCountdown();
+setInterval(updateLoviraCountdown, 1000);
+</script>
 </body>
 </html>
