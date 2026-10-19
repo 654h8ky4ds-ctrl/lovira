@@ -159,7 +159,7 @@ body {
   id="loviraOpened"
   style="display:none;"
 >
-<div id="loviraCountdown" style="position:relative;width:100%;">
+<div id="loviraCountdown" style="position:relative;width:100%;display:none;">
   <img src="04_countdown.jpg" alt="العد التنازلي" style="width:100%;display:block;">
 
   <div id="loviraTimer"
@@ -200,6 +200,7 @@ function openLoviraEnvelope() {
 document.querySelectorAll('.lovira-new-design img:not(#loviraEnvelope)').forEach(img => {
   img.style.display = 'block';
 });
+document.getElementById("loviraCountdown").style.display = "block";
 }
 
 </script>
