@@ -245,6 +245,40 @@ const loviraGuestToken = new URLSearchParams(window.location.search).get("guest"
 const loviraSupabaseUrl = "https://ddfdkarrcijcubzoqxce.supabase.co";
 const loviraPublishableKey = "sb_publishable_G4b-jueJb1pAE2Kawm-R1Q_Hn7KEfAx";
 
+async function loadLoviraGuest() {
+  if (!loviraGuestToken) return;
+
+  try {
+    const response = await fetch(
+      `${loviraSupabaseUrl}/rest/v1/rpc/lovira_get_guest`,
+      {
+        method: "POST",
+        headers: {
+          "apikey": loviraPublishableKey,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          p_token: loviraGuestToken
+        })
+      }
+    );
+
+    if (!response.ok) throw new Error("تعذر جلب الضيفة");
+
+    const guests = await response.json();
+    if (!guests.length) {
+      console.log("رابط الضيفة غير صالح");
+      return;
+    }
+
+    console.log("تم تحميل بيانات الضيفة:", guests[0].guest_name);
+  } catch (error) {
+    console.error("LOVIRA:", error);
+  }
+}
+
+loadLoviraGuest();
+
 </script>
 </body>
 </html>
