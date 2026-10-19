@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LOVIRA | لوحة الإدارة</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Tahoma, Arial, sans-serif;
+  background: #f7f0f5;
+  color: #56334f;
+}
+header {
+  background: #56334f;
+  color: white;
+  padding: 25px;
+  text-align: center;
+}
+header h1 { margin: 0 0 8px; }
+main { max-width: 850px; margin: 25px auto; padding: 15px; }
+.card {
+  background: white;
+  padding: 22px;
+  margin-bottom: 20px;
+  border-radius: 16px;
+  box-shadow: 0 5px 20px #56334f12;
+}
+input, button {
+  width: 100%;
+  padding: 13px;
+  margin: 8px 0;
+  border-radius: 9px;
+  font-size: 15px;
+}
+input { border: 1px solid #d9c7d4; }
+button {
+  background: #754568;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+button:disabled { opacity: .5; }
+#dashboard { display: none; }
+small { color: #806b7c; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>LOVIRA ♛</h1>
+  <div>لوحة إدارة الدعوات الخاصة</div>
+</header>
+
+<main>
+  <section class="card" id="login">
+    <h2>تسجيل دخول الإدارة</h2>
+    <input id="email" type="email"
+      placeholder="البريد الإلكتروني">
+    <input id="password" type="password"
+      placeholder="كلمة المرور">
+    <button id="loginBtn">تسجيل الدخول</button>
+    <p id="loginMessage"></p>
+  </section>
+
+  <section id="dashboard">
+    <div class="card">
+      <h2>مرحبًا بك في LOVIRA 💜</h2>
+      <p>إدارة المناسبات والضيفات والدعوات.</p>
+      <button id="logoutBtn">تسجيل الخروج</button>
+    </div>
+
+    <div class="card">
+      <h2>💌 إدارة الضيفات</h2>
+      <p>سنضيف هنا أسماء الضيفات والمرافقات.</p>
+    </div>
+
+    <div class="card">
+      <h2>📱 روابط الدعوات</h2>
+      <p>سنضيف هنا إنشاء الروابط وإرسال واتساب.</p>
+    </div>
+
+    <div class="card">
+      <h2>📊 متابعة الحضور</h2>
+      <p>سنضيف هنا حالات الدخول والباركودات.</p>
+    </div>
+  </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const db = supabase.createClient(
+  "https://ddfdkarrcijcubzoqxce.supabase.co",
+  "sb_publishable_G4b-jueJb1pAE2Kawm-R1Q_Hn7KEfAx"
+);
+
+const login = document.getElementById("login");
+const dashboard = document.getElementById("dashboard");
+const message = document.getElementById("loginMessage");
+
+async function showSession() {
+  const { data } = await db.auth.getUser();
+  const user = data.user;
+
+  // لا تُعرض لوحة الإدارة إلا بعد التحقق
+  // من الصلاحيات في الخطوة التالية.
+  login.style.display = "block";
+  dashboard.style.display = "none";
+
+  if (user) {
+    message.textContent =
+      "تم تسجيل الدخول. جارٍ تجهيز صلاحيات الإدارة.";
+  }
+}
+
+document.getElementById("loginBtn").onclick =
+async function () {
+  message.textContent = "جارٍ التحقق...";
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  const { error } = await db.auth.signInWithPassword({
+    email, password
+  });
+
+  if (error) {
+    message.textContent = "تعذر تسجيل الدخول: " + error.message;
+    return;
+  }
+
+  await showSession();
+};
+
+document.getElementById("logoutBtn").onclick =
+async function () {
+  await db.auth.signOut();
+  await showSession();
+};
+
+showSession();
+</script>
+</body>
+</html>
