@@ -158,17 +158,20 @@ body {
   id="loviraOpened"
   style="display:none;"
 >
- <img
-  src="05_event_details.jpg"
-  alt="تفاصيل زفاف عايش في السعيرة يوم 27 نوفمبر الساعة 7 مساءً"
-style="width:100%;display:none;"
->
+ <img src="04_countdown.jpg" alt="العد التنازلي">
+<img src="05_event_details.jpg" alt="تفاصيل الحفل">
+<img src="06_qr.jpg" alt="باركود الدعوة">
+<img src="07_guest.jpg" alt="بيانات الضيفة">
+<img src="08_rsvp.jpg" alt="تأكيد الحضور">
+<img src="09_closing.jpg" alt="ختام الدعوة">
   </div>
 <script>
 function openLoviraEnvelope() {
   document.getElementById("loviraEnvelope").style.display = "none";
   document.getElementById("loviraOpened").style.display = "block";
-document.querySelector('img[src="05_event_details.jpg"]').style.display = "block";
+document.querySelectorAll('.lovira-new-design img:not(#loviraEnvelope)').forEach(img => {
+  img.style.display = 'block';
+});
 }
 
 </script>
