@@ -295,6 +295,28 @@ document.getElementById("loviraGuestCompanions").textContent =
 
 document.getElementById("loviraGuestInfo").style.display = "block";
 
+const qrBox = document.getElementById("loviraRealQr");
+const qrMessage = document.getElementById("loviraQrMessage");
+
+if (guest.qr_token) {
+  const qrImage = document.createElement("img");
+
+  const qrData = new URL("reception.html", location.href);
+  qrData.searchParams.set("token", guest.qr_token);
+
+  qrImage.src =
+    "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" +
+    encodeURIComponent(qrData.href);
+
+  qrImage.alt = "باركود دخول الضيفة";
+  qrImage.style.cssText = "width:220px;max-width:100%;display:block;";
+
+  qrBox.replaceChildren(qrImage);
+  qrBox.style.display = "block";
+
+  qrMessage.textContent = "باركود الدخول الخاص بكِ";
+}
+
   } catch (error) {
     console.error("LOVIRA:", error);
   }
