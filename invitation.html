@@ -125,59 +125,7 @@ body {
 </head>
 <body>
 
-<div class="page">
 
-  <section class="envelope" id="envelope">
-    <h1>LOVIRA</h1>
-    <button class="seal" id="openBtn"
-      aria-label="فتح الدعوة">✿</button>
-    <p class="hint">اضغطي على الختم لفتح الدعوة</p>
-  </section>
-
-  <section class="invitation" id="invitation">
-    <p>بكل الحب والفرح</p>
-    <h1>دعوة زفاف</h1>
-    <div class="divider"></div>
-
-    <p>يسعدنا دعوتكم لمشاركتنا فرحتنا بزفاف</p>
-
-    <div class="names">
-      أحمد
-      <br>
-      &
-      <br>
-      سارة
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="details">
-      <p>يوم الخميس</p>
-      <p>25 ديسمبر 2026</p>
-      <p>الساعة 8:00 مساءً</p>
-      <p>قاعة الأفراح</p>
-    </div>
-
-    <p>حضوركم يزيد فرحتنا جمالًا ♡</p>
-  </section>
-
-</div>
-
-<script>
-document.getElementById("openBtn")
-  .addEventListener("click", function () {
-    const envelope = document.getElementById("envelope");
-    const invitation = document.getElementById("invitation");
-
-    envelope.style.opacity = "0";
-    envelope.style.transform = "scale(.9)";
-
-    setTimeout(() => {
-      envelope.style.display = "none";
-      invitation.style.display = "block";
-    }, 700);
-  });
-</script>
 <style>
 .lovira-new-design {
   width: 100%;
