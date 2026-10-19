@@ -277,7 +277,17 @@ async function loadLoviraGuest() {
       return;
     }
 
-    console.log("تم تحميل بيانات الضيفة:", guests[0].guest_name);
+
+const guest = guests[0];
+
+document.getElementById("loviraGuestName").textContent =
+  "الضيفة: " + guest.guest_name;
+
+document.getElementById("loviraGuestCompanions").textContent =
+  "عدد المرافقات: " + guest.companions;
+
+document.getElementById("loviraGuestInfo").style.display = "block";
+
   } catch (error) {
     console.error("LOVIRA:", error);
   }
