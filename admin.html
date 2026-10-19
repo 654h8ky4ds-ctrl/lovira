@@ -166,6 +166,52 @@ async function () {
 };
 
 showSession();
+  
+document.getElementById("loviraGuestForm")
+  .addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const message = document.getElementById("guestMessage");
+    const guestName = document.getElementById("newGuestName").value.trim();
+    const companions = Number(
+      document.getElementById("newGuestCompanions").value
+    );
+
+    if (!guestName || !Number.isInteger(companions) || companions < 0) {
+      message.textContent = "تأكدي من اسم الضيفة وعدد المرافقات.";
+      return;
+    }
+
+    message.textContent = "جارٍ إضافة الضيفة...";
+
+    const { data: events, error: eventError } = await db
+      .from("lovira_events")
+      .select("id")
+      .limit(2);
+
+    if (eventError || !events || events.length !== 1) {
+      message.textContent =
+        "لازم نحدد المناسبة أولًا قبل إضافة الضيفة.";
+      return;
+    }
+
+    const { error } = await db
+      .from("lovira_guests")
+      .insert({
+        event_id: events[0].id,
+        guest_name: guestName,
+        companions: companions
+      });
+
+    if (error) {
+      message.textContent = "تعذرت الإضافة: " + error.message;
+      return;
+    }
+
+    message.textContent = "تمت إضافة الضيفة بنجاح 💜";
+    document.getElementById("loviraGuestForm").reset();
+  });
+
 </script>
 </body>
 </html>
