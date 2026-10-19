@@ -239,5 +239,8 @@ document.getElementById("loviraSeconds").textContent =
 updateLoviraCountdown();
 setInterval(updateLoviraCountdown, 1000);
 </script>
+<script>
+const loviraGuestToken = new URLSearchParams(window.location.search).get("guest");
+</script>
 </body>
 </html>
