@@ -219,6 +219,30 @@ document.getElementById("loviraGuestForm")
     document.getElementById("loviraGuestForm").reset();
   });
 
+async function loadLoviraEvents() {
+  const select = document.getElementById("loviraEventSelect");
+
+  const { data, error } = await db
+    .from("lovira_events")
+    .select("id,event_name");
+
+  select.innerHTML = "";
+
+  if (error) {
+    select.add(new Option("تعذر تحميل المناسبات", ""));
+    console.error(error);
+    return;
+  }
+
+  select.add(new Option("اختاري المناسبة", ""));
+
+  for (const event of data) {
+    select.add(new Option(event.event_name, event.id));
+  }
+}
+
+loadLoviraEvents();
+
 </script>
 </body>
 </html>
