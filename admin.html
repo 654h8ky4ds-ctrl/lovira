@@ -253,6 +253,68 @@ async function loadLoviraEvents() {
 
 loadLoviraEvents();
 
+document.getElementById("loadGuestsBtn").onclick =
+async function () {
+  const list = document.getElementById("loviraGuestsList");
+  const eventId = document.getElementById("loviraEventSelect").value;
+
+  if (!eventId) {
+    list.textContent = "اختاري المناسبة أولًا.";
+    return;
+  }
+
+  list.textContent = "جارٍ تحميل الضيفات...";
+
+  const { data, error } = await db
+    .from("lovira_guests")
+    .select("guest_name,companions,qr_token")
+    .eq("event_id", eventId)
+    .order("guest_name");
+
+  if (error) {
+    list.textContent = "تعذر تحميل الضيفات: " + error.message;
+    return;
+  }
+
+  list.replaceChildren();
+
+  if (!data.length) {
+    list.textContent = "لا توجد ضيفات لهذه المناسبة.";
+    return;
+  }
+
+  for (const guest of data) {
+    const card = document.createElement("div");
+    card.style.cssText =
+      "padding:15px;margin:10px 0;border:1px solid #e5d5e0;border-radius:12px;";
+
+    const name = document.createElement("strong");
+    name.textContent = guest.guest_name;
+
+    const info = document.createElement("p");
+    info.textContent = "المرافقات: " + guest.companions;
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = "💌 نسخ رابط الدعوة";
+
+    button.onclick = async function () {
+      const url = new URL("invitation.html", location.href);
+      url.searchParams.set("guest", guest.qr_token);
+
+      try {
+        await navigator.clipboard.writeText(url.href);
+        button.textContent = "تم نسخ الرابط ✓";
+      } catch {
+        window.prompt("انسخي رابط الدعوة:", url.href);
+      }
+    };
+
+    card.append(name, info, button);
+    list.appendChild(card);
+  }
+};
+
 </script>
 </body>
 </html>
