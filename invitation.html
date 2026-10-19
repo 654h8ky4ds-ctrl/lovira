@@ -213,7 +213,7 @@ style="display:none;position:absolute;top:31%;left:50%;transform:translateX(-50%
 function openLoviraEnvelope() {
   document.getElementById("loviraEnvelope").style.display = "none";
   document.getElementById("loviraOpened").style.display = "block";
-document.querySelectorAll('.lovira-new-design img:not(#loviraEnvelope)').forEach(img => {
+document.querySelectorAll('.lovira-new-design > img:not(#loviraEnvelope)').forEach(img => {
   img.style.display = 'block';
 });
 document.getElementById("loviraCountdown").style.display = "block";
