@@ -350,6 +350,29 @@ async function loadLoviraGuest() {
 }
 
 loadLoviraGuest();
+
+const loviraMusic = document.getElementById("loviraMusic");
+const loviraMusicButton = document.getElementById("loviraMusicButton");
+
+function toggleLoviraMusic() {
+  if (loviraMusic.paused) {
+    loviraMusic.play().catch(error => {
+      console.error("تعذر تشغيل الصوت:", error);
+    });
+  } else {
+    loviraMusic.pause();
+  }
+}
+
+loviraMusicButton.addEventListener("click", toggleLoviraMusic);
+
+loviraMusicButton.addEventListener("keydown", function(e) {
+  if (e.key === "Enter" || e.key === " ") {
+    e.preventDefault();
+    toggleLoviraMusic();
+  }
+});
+
 </script>
 
 </body>
