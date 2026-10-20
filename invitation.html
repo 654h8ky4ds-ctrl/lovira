@@ -7,28 +7,26 @@
 <title>LOVIRA | دعوة زواج عايش علي</title>
 
 <style>
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
   background: #f5eee5;
-  color: #663d36;
+  color: #813f35;
   font-family: Tahoma, Arial, sans-serif;
 }
 
 .lovira {
+  width: 100%;
   max-width: 480px;
-  margin: auto;
+  margin: 0 auto;
   overflow: hidden;
-  background: #fff7ee;
 }
 
 .panel {
   position: relative;
   width: 100%;
-  overflow: hidden;
+  line-height: 0;
 }
 
 .panel > img {
@@ -38,8 +36,8 @@ body {
 }
 
 #loviraEnvelope {
-  width: 100%;
   display: block;
+  width: 100%;
   cursor: pointer;
 }
 
@@ -47,169 +45,93 @@ body {
   display: none;
 }
 
-.letter {
-  min-height: 540px;
-  padding: 90px 30px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  background: radial-gradient(
-    circle at 50% 20%,
-    #fff9f0,
-    #f3d6c9 70%,
-    #c99587
-  );
-  border: 12px solid #f5e5d9;
-}
-
-.letter .ornament {
-  font-size: 38px;
-  color: #a86658;
-  margin: 15px;
-}
-
-.letter h1 {
-  font-size: clamp(24px, 6vw, 34px);
-  line-height: 1.9;
-  font-weight: 500;
-  color: #873e35;
-}
-
-.letter h2 {
-  font-size: clamp(48px, 13vw, 76px);
-  color: #84382f;
-  margin: 15px;
-}
-
-.letter p {
-  font-size: clamp(19px, 5vw, 25px);
-  line-height: 2;
-}
-
-.countdown {
-  background: linear-gradient(
-    160deg,
-    #f9e8dc,
-    #f6d2c3,
-    #fff2e7
-  );
-  padding: 65px 15px 80px;
-  text-align: center;
-  min-height: 360px;
-}
-
-.countdown h2 {
-  font-size: clamp(23px, 6vw, 31px);
-  margin: 0 0 35px;
-  color: #853e34;
-}
-
-.timer {
+#loviraTimer {
+  position: absolute;
+  top: 33.5%;
+  left: 9%;
+  width: 82%;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px;
-  direction: rtl;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2%;
+  direction: ltr;
+  text-align: center;
+  align-items: center;
 }
 
-.timebox {
-  border: 2px solid #dba99a;
-  border-radius: 15px;
-  background: #fff8f0a6;
-  padding: 18px 3px 12px;
-  min-width: 0;
-}
-
-.timebox strong {
+#loviraTimer span {
   display: block;
-  font-size: clamp(21px, 6vw, 35px);
   color: #813f35;
+  font-size: clamp(16px, 5vw, 28px);
+  font-weight: bold;
   font-variant-numeric: tabular-nums;
-}
-
-.timebox span {
-  display: block;
-  margin-top: 12px;
-  font-size: clamp(13px, 3.5vw, 17px);
-}
-
-.qr-panel {
-  position: relative;
-  background: #f6e5d9;
-}
-
-.qr-panel > img {
-  width: 100%;
-  display: block;
+  line-height: 1;
 }
 
 #loviraRealQr {
   position: absolute;
-  top: 31%;
+  top: 38%;
   left: 50%;
   transform: translateX(-50%);
-  width: 52%;
+  width: 43%;
   aspect-ratio: 1;
   display: none;
+  background: white;
+  padding: 3px;
   align-items: center;
   justify-content: center;
-  background: #fff;
-  z-index: 2;
-  padding: 3px;
 }
 
 #loviraRealQr img {
+  display: block;
   width: 100%;
   height: 100%;
-  display: block;
   object-fit: contain;
 }
 
 #loviraQrMessage {
+  position: absolute;
+  bottom: 9%;
+  width: 100%;
   text-align: center;
-  padding: 10px 12px;
-  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
   color: #813f35;
 }
 
-.guest-info {
+#loviraGuestName {
+  position: absolute;
+  top: 32%;
+  left: 12%;
+  width: 76%;
   text-align: center;
-  background: #fff8f0;
-  padding: 22px 12px;
-  color: #63403c;
+  font-size: clamp(15px, 4.5vw, 23px);
+  font-weight: bold;
+  line-height: 1.4;
 }
 
-.guest-info h2 {
-  margin: 0 0 10px;
-  font-size: 23px;
-}
-
-.guest-info p {
-  margin: 0;
-  font-size: 18px;
-}
-
-.panel-fallback {
-  background: #f8e9dc;
-  padding: 60px 20px;
+#loviraGuestCompanions {
+  position: absolute;
+  top: 58%;
+  left: 12%;
+  width: 76%;
   text-align: center;
+  font-size: clamp(16px, 4.5vw, 23px);
+  font-weight: bold;
+  line-height: 1.4;
+}
+
+.guest-display {
+  pointer-events: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
   #invitationContent {
-    animation: fadeIn .8s ease both;
+    animation: fadeIn .7s ease both;
   }
 
   @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(12px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
 }
 </style>
@@ -219,132 +141,73 @@ body {
 
 <main class="lovira">
 
-  <!-- 1. الظرف -->
+  <!-- 1: الظرف -->
   <img
     id="loviraEnvelope"
-    src="02_envelope.jpg"
-    alt="اضغطي لفتح ظرف الدعوة"
+    src="1.jpg"
+    alt="اضغطي لفتح الظرف"
     role="button"
     tabindex="0"
-    aria-label="فتح دعوة زواج عايش علي"
   >
 
   <div id="invitationContent">
 
-    <!-- 2. رسالة الدعوة -->
-    <section class="letter">
-      <div class="ornament">❀ ♡ ❀</div>
-
-      <h1>
-        إلى كل من نال في قلبي مكانًا عزيزًا
-        <br>
-        أدعوكم لحضور حفل زفاف ابني
-      </h1>
-
-      <div class="ornament">♡</div>
+    <!-- 2: رسالة الدعوة -->
+    <section class="panel">
+      <img src="2.jpg" alt="دعوة زواج عايش">
     </section>
 
-    <!-- 3. صفحة عايش -->
-    <section class="letter" style="min-height:460px">
-      <div class="ornament">❀</div>
-
-      <h2>عايش</h2>
-
-      <p>وذلك بمشيئة الله تعالى</p>
-
-      <div class="ornament">♡</div>
+    <!-- 3: الأسطوانة -->
+    <section class="panel">
+      <img src="3.jpg" alt="تشغيل الصوت">
     </section>
 
-    <!-- 4. العد التنازلي -->
-    <section class="countdown">
+    <!-- 4: العد التنازلي -->
+    <section class="panel">
+      <img src="4.jpg" alt="العد التنازلي">
 
-      <h2>العد التنازلي لحفل الزفاف</h2>
-
-      <div class="timer" id="loviraTimer">
-
-        <div class="timebox">
-          <strong id="loviraDays">00</strong>
-          <span>يوم</span>
-        </div>
-
-        <div class="timebox">
-          <strong id="loviraHours">00</strong>
-          <span>ساعة</span>
-        </div>
-
-        <div class="timebox">
-          <strong id="loviraMinutes">00</strong>
-          <span>دقيقة</span>
-        </div>
-
-        <div class="timebox">
-          <strong id="loviraSeconds">00</strong>
-          <span>ثانية</span>
-        </div>
-
+      <div id="loviraTimer">
+        <span id="loviraSeconds">00</span>
+        <span id="loviraMinutes">00</span>
+        <span id="loviraHours">00</span>
+        <span id="loviraDays">00</span>
       </div>
     </section>
 
-    <!-- 5. تفاصيل الحفل -->
+    <!-- 5: تفاصيل الحفل -->
     <section class="panel">
-      <img
-        src="05_event_details.jpg"
-        alt="تاريخ ومكان الحفل"
-      >
+      <img src="5.jpg" alt="تفاصيل الحفل">
     </section>
 
-    <!-- 6. باركود الدخول -->
-    <section class="qr-panel">
-
-      <img
-        src="06_qr_frame.png"
-        alt="إطار باركود الدخول"
-      >
+    <!-- 6: باركود الدخول -->
+    <section class="panel">
+      <img src="6.jpg" alt="باركود الدخول">
 
       <div id="loviraRealQr"></div>
-
-      <p id="loviraQrMessage"></p>
-
+      <div id="loviraQrMessage"></div>
     </section>
 
-    <!-- 7. بيانات الضيفة -->
+    <!-- 7: إثبات الحضور -->
     <section class="panel">
-      <img
-        src="07_guest.jpg"
-        alt="تصميم بيانات الضيفة"
-      >
+      <img src="7.jpg" alt="إثبات الحضور">
     </section>
 
-    <section
-      id="loviraGuestInfo"
-      class="guest-info"
-      hidden
-    >
-      <h2 id="loviraGuestName"></h2>
-      <p id="loviraGuestCompanions"></p>
+    <!-- 8: بيانات الضيفة -->
+    <section class="panel guest-display">
+      <img src="8.jpg" alt="بيانات الضيفة">
+      <div id="loviraGuestName"></div>
+      <div id="loviraGuestCompanions"></div>
     </section>
 
-    <!-- 8. تأكيد الحضور -->
+    <!-- 9: الختام -->
     <section class="panel">
-      <img
-        src="08_rsvp.jpg"
-        alt="تعليمات تأكيد الحضور"
-      >
-    </section>
-
-    <!-- 9. صفحة الختام -->
-    <section class="panel">
-      <img
-        src="09_closing.jpg"
-        alt="ختام الدعوة"
-      >
+      <img src="9.jpg" alt="شاكرين لكم تلبية الدعوة">
     </section>
 
   </div>
 </main>
 
 <script>
-// فتح الظرف
 function openLoviraEnvelope() {
   document.getElementById("loviraEnvelope").style.display = "none";
   document.getElementById("invitationContent").style.display = "block";
@@ -387,7 +250,7 @@ function updateLoviraCountdown() {
 updateLoviraCountdown();
 setInterval(updateLoviraCountdown, 1000);
 
-// بيانات الضيفة
+// بيانات الضيفة والباركود
 const loviraGuestToken =
   new URLSearchParams(location.search).get("guest");
 
@@ -398,10 +261,10 @@ const loviraPublishableKey =
   "sb_publishable_G4b-jueJb1pAE2Kawm-R1Q_Hn7KEfAx";
 
 async function loadLoviraGuest() {
+  const qrMessage = document.getElementById("loviraQrMessage");
 
   if (!loviraGuestToken) {
-    document.getElementById("loviraQrMessage").textContent =
-      "افتحي رابط الدعوة الخاص بالضيفة لإظهار باركود الدخول.";
+    qrMessage.textContent = "باركود الدخول يظهر في رابط الضيفة الخاص";
     return;
   }
 
@@ -427,33 +290,21 @@ async function loadLoviraGuest() {
     const guests = await response.json();
 
     if (!Array.isArray(guests) || !guests.length) {
-      document.getElementById("loviraQrMessage").textContent =
-        "رابط الضيفة غير صالح.";
+      qrMessage.textContent = "رابط الضيفة غير صالح";
       return;
     }
 
     const guest = guests[0];
 
     document.getElementById("loviraGuestName").textContent =
-      "الضيفة: " + guest.guest_name;
+      guest.guest_name || "";
 
     document.getElementById("loviraGuestCompanions").textContent =
-      "عدد المرافقات: " + guest.companions;
+      "عدد المرافقات: " + (guest.companions ?? 0);
 
-    document.getElementById("loviraGuestInfo").hidden = false;
-
-    // إنشاء الباركود الخاص بالضيفة
     if (guest.qr_token) {
-
-      const qrData = new URL(
-        "reception.html",
-        location.href
-      );
-
-      qrData.searchParams.set(
-        "token",
-        guest.qr_token
-      );
+      const qrData = new URL("reception.html", location.href);
+      qrData.searchParams.set("token", guest.qr_token);
 
       const qrImage = document.createElement("img");
 
@@ -467,16 +318,11 @@ async function loadLoviraGuest() {
 
       qrBox.replaceChildren(qrImage);
       qrBox.style.display = "flex";
-
-      document.getElementById("loviraQrMessage").textContent =
-        "باركود الدخول الخاص بكِ";
+      qrMessage.textContent = "";
     }
-
   } catch (error) {
     console.error("LOVIRA:", error);
-
-    document.getElementById("loviraQrMessage").textContent =
-      "تعذر تحميل باركود الدخول. يرجى إعادة المحاولة.";
+    qrMessage.textContent = "تعذر تحميل بيانات الدعوة";
   }
 }
 
