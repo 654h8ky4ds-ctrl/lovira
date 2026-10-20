@@ -237,6 +237,37 @@ src="lucara-video.mp4.MP4"
     </section>
 
 
+<!-- 7: تأكيد الحضور -->
+<section class="panel" id="loviraRsvpSection"
+  style="padding:30px 20px;text-align:center;background:#fff1e8;line-height:1.8;">
+
+  <h2 style="color:#813f35;">إثبات الحضور</h2>
+  <p>يرجى اختيار أحد الخيارات التالية</p>
+
+  <div style="display:flex;gap:12px;justify-content:center;">
+
+    <button type="button" id="loviraAttend"
+      onclick="selectLoviraRsvp('attending')">
+      ✓ سأحضر
+    </button>
+
+    <button type="button" id="loviraDecline"
+      onclick="selectLoviraRsvp('declined')">
+      ✕ لن أحضر
+    </button>
+
+  </div>
+
+  <button type="button" id="loviraRsvpSubmit"
+    onclick="submitLoviraRsvp()"
+    style="margin-top:22px;padding:14px 35px;background:#813f35;color:white;border:0;border-radius:12px;font-size:18px;">
+    إرسال التأكيد
+  </button>
+
+  <p id="loviraRsvpMessage" aria-live="polite"></p>
+
+</section>
+
     <!-- 8: بيانات الضيفة -->
     <section class="panel guest-display">
       <img src="8.jpg" alt="بيانات الضيفة">
