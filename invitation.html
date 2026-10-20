@@ -425,6 +425,82 @@ loviraMusicButton.addEventListener("keydown", function(e) {
   }
 });
 
+let loviraSelectedRsvp = null;
+
+function selectLoviraRsvp(status) {
+  loviraSelectedRsvp = status;
+
+  const attend = document.getElementById("loviraAttend");
+  const decline = document.getElementById("loviraDecline");
+
+  attend.style.background =
+    status === "attending" ? "#813f35" : "#ffffff";
+  attend.style.color =
+    status === "attending" ? "#ffffff" : "#813f35";
+
+  decline.style.background =
+    status === "declined" ? "#813f35" : "#ffffff";
+  decline.style.color =
+    status === "declined" ? "#ffffff" : "#813f35";
+
+  document.getElementById("loviraRsvpMessage").textContent = "";
+}
+
+async function submitLoviraRsvp() {
+  const message = document.getElementById("loviraRsvpMessage");
+  const button = document.getElementById("loviraRsvpSubmit");
+
+  if (!loviraSelectedRsvp) {
+    message.textContent = "اختاري سأحضر أو لن أحضر أولاً";
+    return;
+  }
+
+  if (!loviraGuestToken) {
+    message.textContent = "افتحي رابط الدعوة الخاص بالضيفة";
+    return;
+  }
+
+  button.disabled = true;
+  message.textContent = "جاري حفظ التأكيد...";
+
+  try {
+    const response = await fetch(
+      loviraSupabaseUrl + "/rest/v1/rpc/lovira_submit_rsvp",
+      {
+        method: "POST",
+        headers: {
+          "apikey": loviraPublishableKey,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          p_token: loviraGuestToken,
+          p_status: loviraSelectedRsvp
+        })
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("تعذر حفظ التأكيد");
+    }
+
+    const saved = await response.json();
+
+    if (saved !== true) {
+      throw new Error("رابط الضيفة غير صالح");
+    }
+
+    message.textContent =
+      loviraSelectedRsvp === "attending"
+        ? "تم تأكيد حضورك بنجاح 💗"
+        : "تم تسجيل اعتذارك عن الحضور 💗";
+
+  } catch (error) {
+    console.error(error);
+    message.textContent = "تعذر حفظ الرد، حاولي مرة أخرى";
+    button.disabled = false;
+  }
+}
+
 </script>
 
 </body>
