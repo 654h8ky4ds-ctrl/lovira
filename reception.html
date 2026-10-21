@@ -262,13 +262,12 @@ document.getElementById("start-camera")
             const status = data?.status;
 
             if (status === "success") {
-  const companions = Number(data.companions ?? 0);
-
   showResult(
-    "✅ مسموح بالدخول\n\n" +
-    "👑 اسم الضيفة: " + (data.guest_name || "") + "\n" +
-    "👥 عدد المرافقات: " + companions + "\n" +
-    "🎟️ إجمالي المسموح بالدخول: " + (companions + 1),
+    "✅ مسموح بالدخول\n" +
+    "اسم الضيفة: " + (data.guest_name || "") + "\n" +
+    "عدد المرافقات: " + (data.companions ?? 0) + "\n" +
+    "إجمالي المسموح لهن بالدخول: " +
+    (Number(data.companions ?? 0) + 1),
     "success"
   );
 }
