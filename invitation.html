@@ -511,20 +511,21 @@ function selectLoviraRsvp(status) {
 attend.style.borderRadius = "50%";
 decline.style.borderRadius = "50%";
 
-attend.style.boxShadow =
-  status === "attending"
-    ? "inset 0 0 0 3px #a64b60"
-    : "none";
+attend.style.boxShadow = "none";
+decline.style.boxShadow = "none";
 
-decline.style.boxShadow =
-  status === "declined"
-    ? "inset 0 0 0 3px #a64b60"
-    : "none";
-  attend.style.outline = "none";
+attend.style.outline = "none";
 decline.style.outline = "none";
 
-attend.style.borderRadius = "0";
-decline.style.borderRadius = "0";
+attend.style.filter =
+  status === "attending"
+    ? "drop-shadow(0 0 12px #ff6b9d)"
+    : "none";
+
+decline.style.filter =
+  status === "declined"
+    ? "drop-shadow(0 0 12px #ff6b9d)"
+    : "none";
 
   document.getElementById("loviraRsvpMessage").textContent = "";
 }
