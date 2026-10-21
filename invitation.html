@@ -252,9 +252,24 @@ src="lucara-video.mp4.MP4"
     style="position:absolute;top:70%;left:20%;width:60%;height:9%;background:transparent;border:0;cursor:pointer;">
   </button>
 
-  <p id="loviraRsvpMessage" aria-live="polite"
-    style="position:absolute;bottom:2%;width:100%;text-align:center;line-height:1.4;color:#813f35;font-size:14px;margin:0;">
-  </p>
+  
+<p id="loviraRsvpMessage" aria-live="polite"
+  style="
+    position:absolute;
+    bottom:1%;
+    left:10%;
+    width:80%;
+    text-align:center;
+    color:#813f35;
+    font-size:17px;
+    font-weight:bold;
+    line-height:1.5;
+    background:#fff1e8;
+    border-radius:10px;
+    margin:0;
+  ">
+</p>
+
 </section>
 
 </section>
@@ -423,24 +438,28 @@ loviraMusicButton.addEventListener("keydown", function(e) {
 
 let loviraSelectedRsvp = null;
 
+
 function selectLoviraRsvp(status) {
   loviraSelectedRsvp = status;
 
   const attend = document.getElementById("loviraAttend");
   const decline = document.getElementById("loviraDecline");
 
-  attend.style.background =
-    status === "attending" ? "#813f35" : "#ffffff";
-  attend.style.color =
-    status === "attending" ? "#ffffff" : "#813f35";
+  attend.style.background = "transparent";
+  decline.style.background = "transparent";
 
-  decline.style.background =
-    status === "declined" ? "#813f35" : "#ffffff";
-  decline.style.color =
-    status === "declined" ? "#ffffff" : "#813f35";
+  attend.style.outline =
+    status === "attending" ? "3px solid #813f35" : "none";
+
+  decline.style.outline =
+    status === "declined" ? "3px solid #813f35" : "none";
+
+  attend.style.borderRadius = "12px";
+  decline.style.borderRadius = "12px";
 
   document.getElementById("loviraRsvpMessage").textContent = "";
 }
+
 
 async function submitLoviraRsvp() {
   const message = document.getElementById("loviraRsvpMessage");
