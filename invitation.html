@@ -400,7 +400,7 @@ async function loadLoviraGuest() {
   const qrMessage = document.getElementById("loviraQrMessage");
 
   if (!loviraGuestToken) {
-    qrMessage.textContent = "باركود الدخول يظهر في رابط الضيفة الخاص";
+qrMessage.textContent = "";
     return;
   }
 
