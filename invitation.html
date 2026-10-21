@@ -285,13 +285,13 @@ src="music-bg.jpg"
   <button type="button" id="loviraAttend"
     onclick="selectLoviraRsvp('attending')"
     aria-label="سأحضر"
-    style="position:absolute;top:23%;right:9%;width:40%;height:22%;;;background:transparent;border:0;cursor:pointer;">
+    style="position:absolute;top:30%;right:9%;width:40%;height:22%;;;background:transparent;border:0;cursor:pointer;">
   </button>
 
   <button type="button" id="loviraDecline"
     onclick="selectLoviraRsvp('declined')"
     aria-label="لن أحضر"
-    style="position:absolute;top:23%;left:9%;width:40%;height:22%;;;background:transparent;border:0;cursor:pointer;">
+    style="position:absolute;top:30%;left:9%;width:40%;height:22%;;;background:transparent;border:0;cursor:pointer;">
   </button>
 
   <button type="button" id="loviraRsvpSubmit"
@@ -509,20 +509,11 @@ function selectLoviraRsvp(status) {
   attend.style.background = "transparent";
   decline.style.background = "transparent";
 
-  attend.style.outline =
-  status === "attending" ? "2px solid #813f35" : "none";
+  attend.style.outline = "none";
+decline.style.outline = "none";
 
-decline.style.outline =
-  status === "declined" ? "2px solid #813f35" : "none";
-
-attend.style.outlineOffset = "-12px";
-decline.style.outlineOffset = "-12px";
-
-attend.style.clipPath = "inset(0)";
-decline.style.clipPath = "inset(0)";
-
-attend.style.borderRadius = "18px";
-decline.style.borderRadius = "18px";
+attend.style.borderRadius = "0";
+decline.style.borderRadius = "0";
 
   document.getElementById("loviraRsvpMessage").textContent = "";
 }
