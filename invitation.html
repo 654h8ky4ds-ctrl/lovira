@@ -171,7 +171,15 @@ font-size: clamp(24px, 7vw, 36px);
   transform: translateY(-50%);
 }
 
+@keyframes loviraSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
 
+.lovira-spinning {
+  animation: loviraSpin 3s linear infinite;
+  transform-origin: center center;
+}
 </style>
 </head>
 
@@ -464,7 +472,19 @@ function toggleLoviraMusic() {
     loviraMusic.pause();
   }
 }
+const loviraRecord = document.getElementById("loviraRecord");
 
+loviraMusic.addEventListener("play", () => {
+  loviraRecord?.classList.add("lovira-spinning");
+});
+
+loviraMusic.addEventListener("pause", () => {
+  loviraRecord?.classList.remove("lovira-spinning");
+});
+
+loviraMusic.addEventListener("ended", () => {
+  loviraRecord?.classList.remove("lovira-spinning");
+});
 
 loviraMusicButton.addEventListener("keydown", function(e) {
   if (e.key === "Enter" || e.key === " ") {
