@@ -508,7 +508,18 @@ function selectLoviraRsvp(status) {
 
   attend.style.background = "transparent";
   decline.style.background = "transparent";
+attend.style.borderRadius = "50%";
+decline.style.borderRadius = "50%";
 
+attend.style.boxShadow =
+  status === "attending"
+    ? "inset 0 0 0 3px #a64b60"
+    : "none";
+
+decline.style.boxShadow =
+  status === "declined"
+    ? "inset 0 0 0 3px #a64b60"
+    : "none";
   attend.style.outline = "none";
 decline.style.outline = "none";
 
