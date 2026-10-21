@@ -74,7 +74,7 @@ font-size: clamp(24px, 7vw, 36px);
   top: 36%;
   left: 50%;
   transform: translateX(-50%);
-  width: 39%;
+  width: 36%;
   aspect-ratio: 1;
   display: none;
   background: white;
@@ -136,6 +136,30 @@ font-size: clamp(24px, 7vw, 36px);
     to { opacity: 1; }
   }
 }
+ 
+.lovira,
+#invitationContent,
+.panel {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.panel {
+  display: block;
+  line-height: 0;
+}
+
+.panel > img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0 !important;
+}
+
+#loviraQrMessage:empty {
+  display: none;
+}
+ 
 </style>
 </head>
 
