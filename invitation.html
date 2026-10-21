@@ -510,13 +510,16 @@ function selectLoviraRsvp(status) {
   decline.style.background = "transparent";
 
   attend.style.outline =
-    status === "attending" ? "3px solid #813f35" : "none";
+  status === "attending" ? "2px solid #813f35" : "none";
 
-  decline.style.outline =
-    status === "declined" ? "3px solid #813f35" : "none";
+decline.style.outline =
+  status === "declined" ? "2px solid #813f35" : "none";
 
-  attend.style.borderRadius = "12px";
-  decline.style.borderRadius = "12px";
+attend.style.outlineOffset = "-12px";
+decline.style.outlineOffset = "-12px";
+
+attend.style.borderRadius = "18px";
+decline.style.borderRadius = "18px";
 
   document.getElementById("loviraRsvpMessage").textContent = "";
 }
