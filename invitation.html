@@ -535,14 +535,14 @@ decline.style.boxShadow = "none";
 attend.style.outline = "none";
 decline.style.outline = "none";
 
-attend.style.filter =
+attend.style.boxShadow =
   status === "attending"
-    ? "drop-shadow(0 0 6px #ff4d88) drop-shadow(0 0 14px #ff4d88) drop-shadow(0 0 22px #ff85ad)"
+    ? "0 0 0 3px #ff85ad, 0 0 15px 5px #ff85ad"
     : "none";
 
-decline.style.filter =
+decline.style.boxShadow =
   status === "declined"
-    ? "drop-shadow(0 0 8px #a64b60) drop-shadow(0 0 18px #ff6b9d)"
+    ? "0 0 0 3px #ff85ad, 0 0 15px 5px #ff85ad"
     : "none";
 
   document.getElementById("loviraRsvpMessage").textContent = "";
