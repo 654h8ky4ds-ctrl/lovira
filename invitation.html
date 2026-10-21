@@ -229,33 +229,33 @@ src="lucara-video.mp4.MP4"
 
 
 <!-- 7: تأكيد الحضور -->
-<section class="panel" id="loviraRsvpSection"
-  style="padding:30px 20px;text-align:center;background:#fff1e8;line-height:1.8;">
 
-  <h2 style="color:#813f35;">إثبات الحضور</h2>
-  <p>يرجى اختيار أحد الخيارات التالية</p>
+<!-- إثبات الحضور على الصورة الأصلية -->
+<section class="panel" id="loviraRsvpSection">
+  <img src="6.jpg" alt="إثبات الحضور">
 
-  <div style="display:flex;gap:12px;justify-content:center;">
+  <button type="button" id="loviraAttend"
+    onclick="selectLoviraRsvp('attending')"
+    aria-label="سأحضر"
+    style="position:absolute;top:25%;right:10%;width:39%;height:20%;background:transparent;border:0;cursor:pointer;">
+  </button>
 
-    <button type="button" id="loviraAttend"
-      onclick="selectLoviraRsvp('attending')">
-      ✓ سأحضر
-    </button>
-
-    <button type="button" id="loviraDecline"
-      onclick="selectLoviraRsvp('declined')">
-      ✕ لن أحضر
-    </button>
-
-  </div>
+  <button type="button" id="loviraDecline"
+    onclick="selectLoviraRsvp('declined')"
+    aria-label="لن أحضر"
+    style="position:absolute;top:25%;left:10%;width:39%;height:20%;background:transparent;border:0;cursor:pointer;">
+  </button>
 
   <button type="button" id="loviraRsvpSubmit"
     onclick="submitLoviraRsvp()"
-    style="margin-top:22px;padding:14px 35px;background:#813f35;color:white;border:0;border-radius:12px;font-size:18px;">
-    إرسال التأكيد
+    aria-label="إرسال التأكيد"
+    style="position:absolute;top:70%;left:20%;width:60%;height:9%;background:transparent;border:0;cursor:pointer;">
   </button>
 
-  <p id="loviraRsvpMessage" aria-live="polite"></p>
+  <p id="loviraRsvpMessage" aria-live="polite"
+    style="position:absolute;bottom:2%;width:100%;text-align:center;line-height:1.4;color:#813f35;font-size:14px;margin:0;">
+  </p>
+</section>
 
 </section>
 
