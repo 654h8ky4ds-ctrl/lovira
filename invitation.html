@@ -230,7 +230,7 @@ src="lucara-video.mp4.MP4"
 
     
 <!-- 3: الأسطوانة الموسيقية -->
-<section class="panel">
+<section class="panel" id="loviraMusicSection">
   <img
     src="3.jpg"
     alt="اضغطي لتشغيل أو إيقاف الصوت"
@@ -240,7 +240,20 @@ src="lucara-video.mp4.MP4"
     tabindex="0"
     style="cursor:pointer;"
   >
-
+<img
+  id="loviraRecord"
+  src="vinyl.png"
+  alt=""
+  aria-hidden="true"
+  style="
+    position:absolute;
+    width:45%;
+    left:47%;
+    top:72%;
+    z-index:3;
+    pointer-events:none;
+  "
+>
 <audio id="loviraMusic" src="wedding.mp3.mp3" preload="auto"></audio>
 </section>
 
