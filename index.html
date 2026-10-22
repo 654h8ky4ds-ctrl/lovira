@@ -19,12 +19,19 @@
     html { scroll-behavior: smooth; }
 
     body {
-      margin: 0;
-      font-family: Tahoma, Arial, sans-serif;
-      background: #120b20;
-      color: #f8f1ff;
-      text-align: center;
-    }
+  margin: 0;
+  font-family: Tahoma, Arial, sans-serif;
+  background: #080709;
+  color: #fff8e9;
+  text-align: center;
+  background-image:
+    radial-gradient(
+      ellipse at top,
+      #34261c 0%,
+      #080709 65%
+    );
+  min-height: 100vh;
+}
 
     [hidden] {
       display: none !important;
@@ -41,7 +48,30 @@
       letter-spacing: 5px;
       color: #e6c98b;
     }
+.logo {
+  background: linear-gradient(
+    110deg,
+    #9b7439 0%,
+    #f8e7b7 35%,
+    #fff9e8 50%,
+    #d4aa63 65%,
+    #9b7439 100%
+  );
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: loviraShine 5s linear infinite;
+}
 
+@keyframes loviraShine {
+  0% {
+    background-position: 200% center;
+  }
+  100% {
+    background-position: -200% center;
+  }
+}
     .subtitle {
       color: #cbb8dc;
       font-size: 13px;
@@ -160,6 +190,74 @@
     .admin-message {
       overflow-wrap: anywhere;
     }
+    /* LOVIRA Cinematic Entrance */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  animation: loviraReveal 2.2s ease-out both;
+}
+
+.hero::before {
+  content: "✦";
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #e6c98b;
+  font-size: 28px;
+  animation: loviraGlow 3s ease-in-out infinite;
+}
+
+@keyframes loviraReveal {
+  from {
+    opacity: 0;
+    transform: translateY(35px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes loviraGlow {
+  0%, 100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero,
+  .hero::before,
+  .logo {
+    animation: none !important;
+  }
+}
+ /* LOVIRA Royal Golden Frame */
+
+.hero {
+  border: 1px solid rgba(230, 201, 139, 0.45);
+  outline: 1px solid rgba(230, 201, 139, 0.2);
+  outline-offset: -12px;
+  margin: 15px;
+  border-radius: 4px;
+  box-shadow:
+    inset 0 0 45px rgba(212, 170, 99, 0.07),
+    0 0 35px rgba(212, 170, 99, 0.08);
+}
+
+.hero h1 {
+  color: #f8e7b7;
+  text-shadow: 0 0 25px rgba(230, 201, 139, 0.22);
+}
+
+.hero .gold {
+  letter-spacing: 3px;
+  color: #d4aa63;
+}
   </style>
 </head>
 
