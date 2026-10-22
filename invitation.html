@@ -3,406 +3,402 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>LOVIRA | دعوة زواج عايش علي</title>
-<meta property="og:type" content="website">
 <meta property="og:title" content="دعوة زواج عايش | LOVIRA">
-<meta property="og:description" content="بكل حب وسرور، ندعوكم لمشاركتنا فرحة زواج عايش 💗">
+<meta property="og:description" content="بكل حب وسرور ندعوكم لمشاركة فرحة زواج عايش">
 <meta property="og:image" content="https://654h8ky4ds-ctrl.github.io/lovira/whatsapp-preview.jpg">
-<meta property="og:url" content="https://654h8ky4ds-ctrl.github.io/lovira/invitation.html">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#f5efe3">
+
 <style>
-* { box-sizing: border-box; }
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700&display=swap');
 
+:root {
+  --ivory:#f7f1e6;
+  --cream:#fffdf7;
+  --gold:#b99a64;
+  --brown:#69563f;
+}
+* {box-sizing:border-box}
+html {scroll-behavior:smooth}
 body {
-  margin: 0;
-  background: #f5eee5;
-  color: #813f35;
-  font-family: Tahoma, Arial, sans-serif;
+  margin:0;
+  background:var(--ivory);
+  color:var(--brown);
+  font-family:Tajawal,Tahoma,sans-serif;
+  text-align:center;
 }
-
 .lovira {
-  width: 100%;
-  max-width: 480px;
-  margin: 0 auto;
-  overflow: hidden;
+  max-width:520px;
+  margin:auto;
+  overflow:hidden;
+  background:var(--cream);
+  box-shadow:0 0 50px #66502b20;
 }
-
-.panel {
-  position: relative;
-  width: 100%;
-  line-height: 0;
-}
-
-.panel > img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
 #loviraEnvelope {
-  display: block;
-  width: 100%;
-  cursor: pointer;
+  height:100svh;
+  min-height:620px;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  cursor:pointer;
+  background:radial-gradient(ellipse,#fffdf7,#e7dcc8);
 }
-
+.door {
+  position:absolute;
+  top:0;
+  height:100%;
+  width:50.3%;
+  background:linear-gradient(100deg,#e9dfcc,#fffdf6 45%,#e5d4b8);
+  border:8px double #c8ad7c;
+  box-shadow:inset 0 0 0 18px #ffffff70,inset 0 0 0 20px #b99a6466;
+  transition:transform 1.7s cubic-bezier(.65,0,.15,1);
+  z-index:2;
+}
+.door.left {left:0;transform-origin:left}
+.door.right {right:0;transform-origin:right}
+.door:after {
+  content:'✧';
+  position:absolute;
+  inset:16% 13%;
+  display:grid;
+  place-items:center;
+  font-size:90px;
+  color:#b99a64;
+  border:2px solid #b99a6488;
+  border-radius:160px 160px 12px 12px;
+}
+.opened .door.left {
+  transform:perspective(700px) rotateY(-100deg);
+}
+.opened .door.right {
+  transform:perspective(700px) rotateY(100deg);
+}
+.entry-copy {
+  position:relative;
+  z-index:3;
+  pointer-events:none;
+  background:#fff9edda;
+  border:1px solid #c3a46b;
+  padding:20px 26px;
+  box-shadow:0 10px 50px #69563f22;
+}
+.entry-copy h1 {
+  font:700 46px Amiri,serif;
+  margin:0;
+  color:#8b704a;
+}
+.entry-copy p {margin:8px 0}
+.opened .entry-copy {
+  opacity:0;
+  transition:opacity .5s;
+}
+.door-hint {
+  position:absolute;
+  bottom:8%;
+  z-index:4;
+  background:#fffaf0;
+  border-radius:50px;
+  padding:12px 24px;
+  color:#806844;
+}
+.opened .door-hint {display:none}
 #invitationContent {
-  display: none;
+  display:none;
+  animation:reveal 1.5s ease both;
 }
-
-
-#loviraTimer {
-  position: absolute;
-top: 37%;
-  left: 11%;
-  width: 80%;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0%;
-  direction: ltr;
-  text-align: center;
-  align-items: center;
+@keyframes reveal {
+  from {opacity:0;transform:translateY(25px)}
+  to {opacity:1;transform:none}
 }
-
-
-#loviraTimer span {
-  display: block;
-  width: 100%;
-text-align: center;
-transform: none;
-  color: #813f35;
-font-size: clamp(24px, 7vw, 36px);
-  font-weight: bold;
-  font-variant-numeric: tabular-nums;
-  line-height: 1;
-}
-
-#loviraRealQr {
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 34.5%;
-  aspect-ratio: 1;
-  display: none;
-  background: white;
-  padding: 0px;
-  align-items: center;
-  justify-content: center;
-}
-
-#loviraRealQr img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-#loviraQrMessage {
-  position: absolute;
-  bottom: 9%;
-  width: 100%;
-  text-align: center;
-  font-size: 13px;
-  line-height: 1.5;
-  color: #813f35;
-}
-
-#loviraGuestName {
-  position: absolute;
-  top: 27%;
-  left: 12%;
-  width: 76%;
-  text-align: center;
-  font-size: clamp(15px, 4.5vw, 23px);
-  font-weight: bold;
-  line-height: 1.4;
-}
-
-#loviraGuestCompanions {
-  position: absolute;
-  top: 44%;
-  left: 12%;
-  width: 76%;
-  text-align: center;
-  font-size: clamp(16px, 4.5vw, 23px);
-  font-weight: bold;
-  line-height: 1.4;
-}
-
-.guest-display {
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  #invitationContent {
-    animation: fadeIn .7s ease both;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-}
- 
-.lovira,
-#invitationContent,
 .panel {
-  margin: 0 !important;
-  padding: 0 !important;
+  position:relative;
+  padding:70px 25px;
+  min-height:380px;
+  border-bottom:1px solid #d8c5a45c;
+  background:radial-gradient(ellipse at top,#fffdf8,#f4eadb);
 }
-
-.panel {
-  display: block;
-  line-height: 0;
+.eyebrow {
+  letter-spacing:3px;
+  color:var(--gold);
+  font-size:13px;
 }
-
-.panel > img {
-  display: block;
-  width: 100%;
-  height: auto;
-  margin: 0 !important;
+.ornament {
+  color:var(--gold);
+  font-size:28px;
+  margin:18px;
 }
-
-#loviraQrMessage:empty {
-  display: none;
+.panel h2 {
+  font:700 36px Amiri,serif;
+  color:#8a6c43;
+  margin:10px 0 20px;
 }
- 
-
-#loviraGuestName {
-  top: 35% !important;
-  transform: translateY(-50%);
+.panel p {line-height:2;font-size:17px}
+.hero-scene {
+  min-height:710px;
+  display:flex;
+  flex-direction:column;
+  justify-content:end;
+  padding-bottom:75px;
+  background:
+    linear-gradient(0deg,#f9f2e9 2%,#f9f2e9aa 35%,transparent 80%),
+    url('https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1000&q=85') center/cover;
 }
-
-#loviraGuestCompanions {
-  top: 56% !important;
-  transform: translateY(-50%);
+.hero-scene h2 {
+  font-size:54px;
+  text-shadow:0 2px 15px white;
 }
-
-@keyframes loviraSpin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.scene-photo {
+  width:100%;
+  height:230px;
+  object-fit:cover;
+  border:7px solid #fffdf7;
+  box-shadow:0 10px 35px #765c3630;
 }
-
+.gold-btn {
+  background:linear-gradient(135deg,#c7a96f,#e4d2a8,#b99a64);
+  color:#493c2c;
+  border:0;
+  border-radius:40px;
+  padding:16px 28px;
+  font:700 17px Tajawal;
+  cursor:pointer;
+  text-decoration:none;
+  display:inline-block;
+  box-shadow:0 5px 18px #9d7d3d26;
+}
+.outline-btn {
+  border:1px solid #b99a64;
+  background:#fff9ef;
+  color:#725938;
+  padding:14px 25px;
+  border-radius:40px;
+  font:700 16px Tajawal;
+  cursor:pointer;
+}
+.music-disc {
+  font-size:75px;
+  color:#aa8a55;
+  display:block;
+  margin:18px auto;
+  line-height:1;
+}
+#loviraRecord {display:inline-block}
 .lovira-spinning {
-  animation: loviraSpin 3s linear infinite;
-  transform-origin: center center;
+  animation:spin 3s linear infinite;
+}
+@keyframes spin {
+  to {transform:rotate(360deg)}
+}
+#loviraTimer {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:7px;
+  direction:ltr;
+  margin:35px 0;
+}
+.timer-cell {
+  background:#fff9ef;
+  border:1px solid #dfc9a5;
+  border-radius:12px;
+  padding:17px 3px;
+}
+.timer-cell span {
+  display:block;
+  font-size:30px;
+  font-weight:700;
+  color:#947346;
+}
+.timer-cell small {font-size:12px}
+.guest-card {
+  border:1px solid #cfb485;
+  background:#fffaf2;
+  padding:35px 15px;
+  margin-top:20px;
+  border-radius:120px 120px 18px 18px;
+}
+#loviraGuestName {
+  font:700 30px Amiri,serif;
+  color:#856a44;
+  min-height:45px;
+}
+#loviraGuestCompanions {
+  font-weight:700;
+  font-size:23px;
+}
+#loviraRealQr {
+  width:210px;
+  height:210px;
+  margin:25px auto;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:12px;
+  background:white;
+  border:1px solid #d7bd91;
+}
+#loviraRealQr img {
+  width:100%;
+  height:100%;
+  object-fit:contain;
+}
+#loviraQrMessage {font-size:14px}
+.rsvp-options {
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+.rsvp-options button {min-width:125px}
+.rsvp-options button:focus {outline:2px solid #947346}
+#loviraRsvpMessage {
+  min-height:28px;
+  margin-top:20px;
+  font-weight:700;
+}
+footer {
+  padding:55px 20px;
+  background:#e9ddc8;
+  color:#8b714d;
+}
+button:focus-visible,
+a:focus-visible,
+#loviraEnvelope:focus-visible {
+  outline:3px solid #8c6d39;
+  outline-offset:3px;
+}
+@media(prefers-reduced-motion:reduce) {
+  *,*:before,*:after {
+    animation:none!important;
+    transition:none!important;
+  }
+}
+@media(max-width:380px) {
+  .panel {padding:55px 18px}
+  .hero-scene {min-height:620px}
 }
 </style>
 </head>
 
 <body>
-
 <main class="lovira">
 
-  <!-- 1: الظرف -->
-  <img
-    id="loviraEnvelope"
-    src="1.jpg"
-    alt="اضغطي لفتح الظرف"
-    role="button"
-    tabindex="0"
-  >
+<div id="loviraEnvelope" role="button" tabindex="0" aria-label="اضغطي لفتح دعوة زواج عايش">
+  <div class="door left"></div>
+  <div class="door right"></div>
+  <div class="entry-copy">
+    <div class="eyebrow">LOVIRA PRESENTS</div>
+    <h1>عايش</h1>
+    <p>دعوة زواج</p>
+  </div>
+  <div class="door-hint">✦ اضغطي لفتح الدعوة ✦</div>
+</div>
 
-  <div id="invitationContent">
+<div id="invitationContent">
 
-    <!-- 2: رسالة الدعوة -->
+<section class="panel hero-scene">
+  <div class="eyebrow">بكل حب وسرور</div>
+  <h2>عايش</h2>
+  <p>نتشرف بدعوتكم لمشاركتنا فرحة الزواج</p>
+  <div class="ornament">✧ ❦ ✧</div>
+</section>
 
-
-    
-<!-- 3: الأسطوانة الموسيقية -->
 <section class="panel" id="loviraMusicSection">
-  <img
-src="music-bg.jpg"
-    alt="اضغطي لتشغيل أو إيقاف الصوت"
-    id="loviraMusicButton"
-    onclick="toggleLoviraMusic()"
-    role="button"
-    tabindex="0"
-    style="cursor:pointer;"
-  >
-<img
-  id="loviraRecord"
-  src="vinyl.png"
-  alt=""
-  aria-hidden="true"
-  style="
-    position:absolute;
-    width:42%;
-    left:48%;
-    top:73%;
-    z-index:3;
-    pointer-events:none;
-  "
->
-<audio id="loviraMusic" src="wedding.mp3.mp3" preload="none"></audio>
-<p style="
-  position:absolute;
-  top:93%;
-  left:48%;
-  width:42%;
-  text-align:center;
-  color:#813f35;
-  font-size:15px;
-  font-weight:bold;
-  line-height:1.4;
-  margin:0;
-  z-index:4;
-">
-  اضغطي لتشغيل الصوت
-</p>
-</section>
-<section class="panel" style="position:relative;">
-<img src="3.jpg" alt="دعوة زواج عايش" style="display:block;width:100%;height:auto;">
-  <button
-  type="button"
-  onclick="toggleLoviraMusic()"
-  aria-label="تشغيل أو إيقاف الشيلة"
-  style="
-    position:absolute;
-    left:52%;
-    top:79%;
-    width:30%;
-    height:17%;
-    border:0;
-    background:transparent;
-    cursor:pointer;
-    z-index:5;
-  "
-></button>
-    </section>
-
-    <!-- 4: العد التنازلي -->
-    <section class="panel">
-<img src="5.jpg" alt="العد التنازلي">
-
-      <div id="loviraTimer">
-        <span id="loviraSeconds">00</span>
-        <span id="loviraMinutes">00</span>
-        <span id="loviraHours">00</span>
-        <span id="loviraDays">00</span>
-      </div>
-    </section>
-
-    
-<!-- 5: تفاصيل الحفل -->
-<section class="panel" style="position:relative;">
-
-  <img src="4.jpg" alt="تفاصيل الحفل">
-
-  <a
-    href="https://maps.app.goo.gl/ecntp91hcaU6pYQ88?g_st=ic"
-    aria-label="فتح موقع الحفل"
-    style="
-      position:absolute;
-      top:65%;
-      left:12%;
-      width:23%;
-      height:16%;
-      z-index:10;
-      display:block;
-      cursor:pointer;
-      touch-action:manipulation;
-    "
-  ></a>
-
-<span style="
-  position:absolute;
-  top:73%;
-  left:12%;
-  width:23%;
-  text-align:center;
-  font-size:clamp(10px,2.5vw,13px);
-  color:#813f35;
-  font-weight:bold;
-  white-space:nowrap;
-  pointer-events:none;
-">
-  انتقل للموقع
-</span>
-
+  <div class="eyebrow">أجواء الفرح</div>
+  <h2>شيلة المناسبة</h2>
+  <div class="music-disc"><span id="loviraRecord">◉</span></div>
+  <button class="gold-btn" id="loviraMusicButton" type="button" onclick="toggleLoviraMusic()">♫ تشغيل / إيقاف الشيلة</button>
+  <audio id="loviraMusic" src="wedding.mp3.mp3" preload="none"></audio>
 </section>
 
-
-<!-- 7: تأكيد الحضور -->
-
-<!-- إثبات الحضور على الصورة الأصلية -->
-<section class="panel" id="loviraRsvpSection">
-  <img src="6.jpg" alt="إثبات الحضور">
-
-  <button type="button" id="loviraAttend"
-    onclick="selectLoviraRsvp('attending')"
-    aria-label="سأحضر"
-    style="position:absolute;top:30%;right:9%;width:40%;height:22%;;;background:transparent;border:0;cursor:pointer;">
-  </button>
-
-  <button type="button" id="loviraDecline"
-    onclick="selectLoviraRsvp('declined')"
-    aria-label="لن أحضر"
-    style="position:absolute;top:30%;left:9%;width:40%;height:22%;;;background:transparent;border:0;cursor:pointer;">
-  </button>
-
-  <button type="button" id="loviraRsvpSubmit"
-    onclick="submitLoviraRsvp()"
-    aria-label="إرسال التأكيد"
-    style="position:absolute;top:70%;left:20%;width:60%;height:9%;background:transparent;border:0;cursor:pointer;">
-  </button>
-
-  
-
-<p id="loviraRsvpMessage" aria-live="polite"
-  style="
-    position:absolute;
-    top:81%;
-    left:10%;
-    width:80%;
-    text-align:center;
-    color:#000000;
-    font-size:18px;
-    font-weight:bold;
-    line-height:1.4;
-    margin:0;
-    z-index:5;
-  ">
-</p>
-
-
-</section>
-
-</section>
-
-    <!-- 8: بيانات الضيفة -->
-    <section class="panel guest-display">
-      <img src="8.jpg" alt="بيانات الضيفة">
-      <div id="loviraGuestName"></div>
-      <div id="loviraGuestCompanions"></div>
-    </section>
-<!-- باركود الدخول بعد بيانات الضيفة -->
 <section class="panel">
-  <img src="7.jpg" alt="باركود الدخول إلى الحفل">
+  <div class="eyebrow">اللحظات الجميلة</div>
+  <h2>العد التنازلي</h2>
+  <p>حتى ليلة العمر</p>
+  <div id="loviraTimer">
+    <div class="timer-cell"><span id="loviraSeconds">00</span><small>ثانية</small></div>
+    <div class="timer-cell"><span id="loviraMinutes">00</span><small>دقيقة</small></div>
+    <div class="timer-cell"><span id="loviraHours">00</span><small>ساعة</small></div>
+    <div class="timer-cell"><span id="loviraDays">00</span><small>يوم</small></div>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="eyebrow">الاحتفال</div>
+  <h2>المكان والزمان</h2>
+  <img class="scene-photo" src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=85" alt="أجواء حفل زواج أنيق">
+  <p>٢٧ نوفمبر ٢٠٢٦</p>
+  <p>الساعة ٧ مساءً</p>
+  <a class="outline-btn" href="https://maps.app.goo.gl/ecntp91hcaU6pYQ88?g_st=ic" target="_blank" rel="noopener">الموقع على الخريطة ↗</a>
+</section>
+
+<section class="panel" id="loviraRsvpSection">
+  <div class="eyebrow">شاركونا الفرحة</div>
+  <h2>إثبات الحضور</h2>
+  <p>يسعدنا معرفة ردكم</p>
+  <div class="rsvp-options">
+    <button type="button" id="loviraAttend" class="outline-btn" onclick="selectLoviraRsvp('attending')">سأحضر</button>
+    <button type="button" id="loviraDecline" class="outline-btn" onclick="selectLoviraRsvp('declined')">لن أحضر</button>
+  </div>
+  <p><button type="button" id="loviraRsvpSubmit" class="gold-btn" onclick="submitLoviraRsvp()">إرسال التأكيد</button></p>
+  <p id="loviraRsvpMessage" aria-live="polite"></p>
+</section>
+
+<section class="panel">
+  <div class="eyebrow">دعوة خاصة</div>
+  <h2>ضيفتنا الكريمة</h2>
+  <div class="guest-card">
+    <div id="loviraGuestName"></div>
+    <p>عدد المرافقات</p>
+    <div id="loviraGuestCompanions"></div>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="eyebrow">بطاقة الدخول</div>
+  <h2>الباركود الخاص</h2>
+  <p>يرجى إبراز الرمز عند بوابة الحفل</p>
   <div id="loviraRealQr"></div>
   <div id="loviraQrMessage"></div>
+  <p style="font-size:13px">الباركود مخصص للدعوة ويُستخدم حسب نظام الاستقبال.</p>
 </section>
-    <!-- 9: الختام -->
-    <section class="panel">
-      <img src="9.jpg" alt="شاكرين لكم تلبية الدعوة">
-    </section>
 
-  </div>
+<footer>
+  <div class="ornament">✧ ❦ ✧</div>
+  <h2>شكرًا لمشاركتكم فرحتنا</h2>
+  <p>LOVIRA · 2026</p>
+</footer>
+
+</div>
 </main>
 
 <script>
+let loviraOpening = false;
+
 function openLoviraEnvelope() {
-  document.getElementById("loviraEnvelope").style.display = "none";
-  document.getElementById("invitationContent").style.display = "block";
+  if (loviraOpening) return;
+  loviraOpening = true;
+
+  const gate = document.getElementById("loviraEnvelope");
+  const content = document.getElementById("invitationContent");
+
+  document.body.classList.add("opened");
+
+  window.setTimeout(() => {
+    content.style.display = "block";
+    gate.style.display = "none";
+    window.scrollTo({top:0,behavior:"instant"});
+  }, window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 50 : 1850);
 }
 
 const envelope = document.getElementById("loviraEnvelope");
 
-envelope.addEventListener("click", openLoviraEnvelope);
+envelope.addEventListener("click",openLoviraEnvelope);
 
-envelope.addEventListener("keydown", function(e) {
-  if (e.key === "Enter" || e.key === " ") {
+envelope.addEventListener("keydown",function(e) {
+  if(e.key==="Enter" || e.key===" ") {
     e.preventDefault();
     openLoviraEnvelope();
   }
@@ -411,28 +407,21 @@ envelope.addEventListener("keydown", function(e) {
 // العد التنازلي
 function updateLoviraCountdown() {
   const weddingDate = new Date("2026-11-27T19:00:00+03:00");
-  const difference = Math.max(0, weddingDate - new Date());
+  const difference = Math.max(0,weddingDate-new Date());
 
-  const days = Math.floor(difference / 86400000);
-  const hours = Math.floor(difference / 3600000) % 24;
-  const minutes = Math.floor(difference / 60000) % 60;
-  const seconds = Math.floor(difference / 1000) % 60;
+  const days = Math.floor(difference/86400000);
+  const hours = Math.floor(difference/3600000)%24;
+  const minutes = Math.floor(difference/60000)%60;
+  const seconds = Math.floor(difference/1000)%60;
 
-  document.getElementById("loviraDays").textContent =
-    String(days).padStart(2, "0");
-
-  document.getElementById("loviraHours").textContent =
-    String(hours).padStart(2, "0");
-
-  document.getElementById("loviraMinutes").textContent =
-    String(minutes).padStart(2, "0");
-
-  document.getElementById("loviraSeconds").textContent =
-    String(seconds).padStart(2, "0");
+  document.getElementById("loviraDays").textContent=String(days).padStart(2,"0");
+  document.getElementById("loviraHours").textContent=String(hours).padStart(2,"0");
+  document.getElementById("loviraMinutes").textContent=String(minutes).padStart(2,"0");
+  document.getElementById("loviraSeconds").textContent=String(seconds).padStart(2,"0");
 }
 
 updateLoviraCountdown();
-setInterval(updateLoviraCountdown, 1000);
+setInterval(updateLoviraCountdown,1000);
 
 // بيانات الضيفة والباركود
 const loviraGuestToken =
@@ -445,196 +434,165 @@ const loviraPublishableKey =
   "sb_publishable_G4b-jueJb1pAE2Kawm-R1Q_Hn7KEfAx";
 
 async function loadLoviraGuest() {
-  const qrMessage = document.getElementById("loviraQrMessage");
+  const qrMessage=document.getElementById("loviraQrMessage");
 
-  if (!loviraGuestToken) {
-qrMessage.textContent = "";
+  if(!loviraGuestToken) {
+    qrMessage.textContent="";
     return;
   }
 
   try {
-    const response = await fetch(
+    const response=await fetch(
       `${loviraSupabaseUrl}/rest/v1/rpc/lovira_get_guest`,
       {
-        method: "POST",
-        headers: {
-          "apikey": loviraPublishableKey,
-          "Content-Type": "application/json"
+        method:"POST",
+        headers:{
+          "apikey":loviraPublishableKey,
+          "Content-Type":"application/json"
         },
-        body: JSON.stringify({
-          p_token: loviraGuestToken
-        })
+        body:JSON.stringify({p_token:loviraGuestToken})
       }
     );
 
-    if (!response.ok) {
+    if(!response.ok) {
       throw new Error("تعذر جلب بيانات الضيفة");
     }
 
-    const guests = await response.json();
+    const guests=await response.json();
 
-    if (!Array.isArray(guests) || !guests.length) {
-      qrMessage.textContent = "رابط الضيفة غير صالح";
+    if(!Array.isArray(guests)||!guests.length) {
+      qrMessage.textContent="رابط الضيفة غير صالح";
       return;
     }
 
-    const guest = guests[0];
+    const guest=guests[0];
 
-    document.getElementById("loviraGuestName").textContent =
-      guest.guest_name || "";
+    document.getElementById("loviraGuestName").textContent=
+      guest.guest_name||"";
 
-    document.getElementById("loviraGuestCompanions").textContent =
-String(guest.companions ?? 0);
+    document.getElementById("loviraGuestCompanions").textContent=
+      String(guest.companions??0);
 
-    if (guest.qr_token) {
-      const qrData = new URL("reception.html", location.href);
-      qrData.searchParams.set("token", guest.qr_token);
+    if(guest.qr_token) {
+      const qrData=new URL("reception.html",location.href);
+      qrData.searchParams.set("token",guest.qr_token);
 
-      const qrImage = document.createElement("img");
-
-      qrImage.src =
-        "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" +
+      const qrImage=document.createElement("img");
+      qrImage.src=
+        "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data="+
         encodeURIComponent(qrData.href);
+      qrImage.alt="باركود دخول الضيفة";
 
-      qrImage.alt = "باركود دخول الضيفة";
-
-      const qrBox = document.getElementById("loviraRealQr");
-
+      const qrBox=document.getElementById("loviraRealQr");
       qrBox.replaceChildren(qrImage);
-      qrBox.style.display = "flex";
-      qrMessage.textContent = "";
+      qrBox.style.display="flex";
+      qrMessage.textContent="";
     }
-  } catch (error) {
-    console.error("LOVIRA:", error);
-    qrMessage.textContent = "تعذر تحميل بيانات الدعوة";
+  } catch(error) {
+    console.error("LOVIRA:",error);
+    qrMessage.textContent="تعذر تحميل بيانات الدعوة";
   }
 }
 
 loadLoviraGuest();
 
-const loviraMusic = document.getElementById("loviraMusic");
-const loviraMusicButton = document.getElementById("loviraMusicButton");
+// الموسيقى
+const loviraMusic=document.getElementById("loviraMusic");
+const loviraMusicButton=document.getElementById("loviraMusicButton");
+const loviraRecord=document.getElementById("loviraRecord");
 
 function toggleLoviraMusic() {
-  if (loviraMusic.paused) {
-    loviraMusic.play().catch(error => {
-      console.error("تعذر تشغيل الصوت:", error);
+  if(loviraMusic.paused) {
+    loviraMusic.play().catch(error=>{
+      console.error("تعذر تشغيل الصوت:",error);
     });
   } else {
     loviraMusic.pause();
   }
 }
-const loviraRecord = document.getElementById("loviraRecord");
 
-loviraMusic.addEventListener("play", () => {
+loviraMusic.addEventListener("play",()=>{
   loviraRecord?.classList.add("lovira-spinning");
 });
-
-loviraMusic.addEventListener("pause", () => {
+loviraMusic.addEventListener("pause",()=>{
+  loviraRecord?.classList.remove("lovira-spinning");
+});
+loviraMusic.addEventListener("ended",()=>{
   loviraRecord?.classList.remove("lovira-spinning");
 });
 
-loviraMusic.addEventListener("ended", () => {
-  loviraRecord?.classList.remove("lovira-spinning");
-});
-
-loviraMusicButton.addEventListener("keydown", function(e) {
-  if (e.key === "Enter" || e.key === " ") {
-    e.preventDefault();
-    toggleLoviraMusic();
-  }
-});
-
-let loviraSelectedRsvp = null;
-
+// إثبات الحضور
+let loviraSelectedRsvp=null;
 
 function selectLoviraRsvp(status) {
-  loviraSelectedRsvp = status;
+  loviraSelectedRsvp=status;
 
-  const attend = document.getElementById("loviraAttend");
-  const decline = document.getElementById("loviraDecline");
+  const attend=document.getElementById("loviraAttend");
+  const decline=document.getElementById("loviraDecline");
 
-  attend.style.background = "transparent";
-  decline.style.background = "transparent";
-attend.style.borderRadius = "50%";
-decline.style.borderRadius = "50%";
+  attend.style.boxShadow=
+    status==="attending"?"0 0 0 3px #c8a66b":"none";
 
-attend.style.boxShadow = "none";
-decline.style.boxShadow = "none";
+  decline.style.boxShadow=
+    status==="declined"?"0 0 0 3px #c8a66b":"none";
 
-attend.style.outline = "none";
-decline.style.outline = "none";
-
-attend.style.boxShadow =
-  status === "attending"
-    ? "0 0 0 3px #ff85ad, 0 0 15px 5px #ff85ad"
-    : "none";
-
-decline.style.boxShadow =
-  status === "declined"
-    ? "0 0 0 3px #ff85ad, 0 0 15px 5px #ff85ad"
-    : "none";
-
-  document.getElementById("loviraRsvpMessage").textContent = "";
+  document.getElementById("loviraRsvpMessage").textContent="";
 }
 
-
 async function submitLoviraRsvp() {
-  const message = document.getElementById("loviraRsvpMessage");
-  const button = document.getElementById("loviraRsvpSubmit");
+  const message=document.getElementById("loviraRsvpMessage");
+  const button=document.getElementById("loviraRsvpSubmit");
 
-  if (!loviraSelectedRsvp) {
-    message.textContent = "اختاري سأحضر أو لن أحضر أولاً";
+  if(!loviraSelectedRsvp) {
+    message.textContent="اختاري سأحضر أو لن أحضر أولاً";
     return;
   }
 
-  if (!loviraGuestToken) {
-    message.textContent = "افتحي رابط الدعوة الخاص بالضيفة";
+  if(!loviraGuestToken) {
+    message.textContent="افتحي رابط الدعوة الخاص بالضيفة";
     return;
   }
 
-  button.disabled = true;
-  message.textContent = "جاري حفظ التأكيد...";
+  button.disabled=true;
+  message.textContent="جاري حفظ التأكيد...";
 
   try {
-    const response = await fetch(
-      loviraSupabaseUrl + "/rest/v1/rpc/lovira_submit_rsvp",
+    const response=await fetch(
+      loviraSupabaseUrl+"/rest/v1/rpc/lovira_submit_rsvp",
       {
-        method: "POST",
-        headers: {
-          "apikey": loviraPublishableKey,
-          "Content-Type": "application/json"
+        method:"POST",
+        headers:{
+          "apikey":loviraPublishableKey,
+          "Content-Type":"application/json"
         },
-        body: JSON.stringify({
-          p_token: loviraGuestToken,
-          p_status: loviraSelectedRsvp
+        body:JSON.stringify({
+          p_token:loviraGuestToken,
+          p_status:loviraSelectedRsvp
         })
       }
     );
 
-    if (!response.ok) {
+    if(!response.ok) {
       throw new Error("تعذر حفظ التأكيد");
     }
 
-    const saved = await response.json();
+    const saved=await response.json();
 
-    if (saved !== true) {
+    if(saved!==true) {
       throw new Error("رابط الضيفة غير صالح");
     }
 
-    message.textContent =
-      loviraSelectedRsvp === "attending"
-        ? "تم تأكيد حضورك بنجاح 💗"
-        : "تم تسجيل اعتذارك عن الحضور 💗";
+    message.textContent=
+      loviraSelectedRsvp==="attending"
+        ?"تم تأكيد حضورك بنجاح 💗"
+        :"تم تسجيل اعتذارك عن الحضور 💗";
 
-  } catch (error) {
+  } catch(error) {
     console.error(error);
-    message.textContent = "تعذر حفظ الرد، حاولي مرة أخرى";
-    button.disabled = false;
+    message.textContent="تعذر حفظ الرد، حاولي مرة أخرى";
+    button.disabled=false;
   }
 }
-
 </script>
-
 </body>
 </html>
