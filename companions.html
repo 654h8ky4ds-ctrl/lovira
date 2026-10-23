@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>باركودات المرافقات | LOVIRA</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: #f7f1e6;
+  color: #69563f;
+  font-family: Tahoma, Arial, sans-serif;
+  text-align: center;
+}
+main {
+  max-width: 520px;
+  min-height: 100vh;
+  margin: auto;
+  padding: 55px 20px;
+  background: #fffdf7;
+}
+h1 { color: #8a6c43; }
+.subtitle { line-height: 1.9; }
+.card {
+  margin: 22px auto;
+  padding: 25px 15px;
+  background: #fff9ef;
+  border: 1px solid #cfb485;
+  border-radius: 20px;
+}
+.qr {
+  display: block;
+  width: 210px;
+  height: 210px;
+  margin: 20px auto;
+}
+button {
+  padding: 12px 22px;
+  border: 0;
+  border-radius: 30px;
+  background: #b99a64;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+button:disabled { opacity: .5; }
+#message { line-height: 1.8; }
+</style>
+</head>
+<body>
+<main>
+  <div>✧ ❦ ✧</div>
+  <h1>باركودات المرافقات</h1>
+  <p class="subtitle">
+    لكل مرافقة باركود خاص يُستخدم مرة واحدة فقط.
+    يمكنك مشاركة باركود كل مرافقة بشكل مستقل.
+  </p>
+  <div id="message" role="status">
+    جاري تحميل باركودات المرافقات...
+  </div>
+  <div id="companions"></div>
+</main>
+
+<script>
+"use strict";
+
+const params = new URLSearchParams(location.search);
+const guestToken = params.get("guest");
+
+const supabaseUrl =
+  "https://ddfdkarrcijcubzoqxce.supabase.co";
+
+const publishableKey =
+  "sb_publishable_G4b-jueJb1pAE2Kawm-R1Q_Hn7KEfAx";
+
+const message = document.getElementById("message");
+const container = document.getElementById("companions");
+
+async function loadCompanions() {
+  if (!guestToken) {
+    message.textContent = "رابط الدعوة غير صالح.";
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      supabaseUrl +
+      "/rest/v1/rpc/lovira_get_companions",
+      {
+        method: "POST",
+        headers: {
+          "apikey": publishableKey,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          p_token: guestToken
+        })
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("تعذر جلب المرافقات");
+    }
+
+    const companions = await response.json();
+
+    if (!Array.isArray(companions)) {
+      throw new Error("بيانات المرافقات غير صحيحة");
+    }
+
+    if (companions.length === 0) {
+      message.textContent =
+        "لا توجد باركودات مرافقات لهذه الدعوة.";
+      return;
+    }
+
+    message.textContent = "";
+
+    for (const companion of companions) {
+      const card = document.createElement("div");
+      card.className = "card";
+
+      const title = document.createElement("h2");
+      title.textContent =
+        "المرافقة " + companion.companion_number;
+
+      const qrUrl = new URL("reception.html", location.href);
+      qrUrl.searchParams.set("token", companion.qr_token);
+
+      const image = document.createElement("img");
+      image.className = "qr";
+      image.alt = "باركود " + title.textContent;
+      image.src =
+        "https://api.qrserver.com/v1/create-qr-code/" +
+        "?size=300x300&data=" +
+        encodeURIComponent(qrUrl.href);
+
+      const shareButton = document.createElement("button");
+      shareButton.type = "button";
+      shareButton.textContent = "مشاركة الباركود عبر واتساب";
+
+      shareButton.onclick = () => {
+        const text =
+          "دعوة دخول خاصة - " +
+          title.textContent +
+          "\nيرجى إبراز الباركود عند الدخول:\n" +
+          image.src;
+
+        window.open(
+          "https://wa.me/?text=" + encodeURIComponent(text),
+          "_blank",
+          "noopener"
+        );
+      };
+
+      card.append(title, image, shareButton);
+      container.appendChild(card);
+    }
+
+  } catch (error) {
+    console.error(error);
+    message.textContent =
+      "تعذر تحميل الباركودات. تأكدي من ربط قاعدة البيانات.";
+  }
+}
+
+loadCompanions();
+</script>
+</body>
+</html>
