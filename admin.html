@@ -267,7 +267,7 @@ async function () {
 
   const { data, error } = await db
     .from("lovira_guests")
-    .select("guest_name,companions,qr_token")
+.select("id,guest_name,companions,qr_token")
     .eq("event_id", eventId)
     .order("guest_name");
 
@@ -310,7 +310,51 @@ async function () {
       }
     };
 
-    card.append(name, info, button);
+
+const deleteButton = document.createElement("button");
+deleteButton.type = "button";
+deleteButton.textContent = "🗑️ حذف الضيفة";
+
+deleteButton.style.cssText = `
+  background:#a83f55;
+  color:white;
+  margin-top:8px;
+`;
+
+deleteButton.onclick = async function () {
+  const confirmed = confirm(
+    "هل أنتِ متأكدة من حذف الضيفة: " +
+    guest.guest_name +
+    "؟\nسيتم حذف باركودها وباركودات مرافقاتها نهائيًا."
+  );
+
+  if (!confirmed) return;
+
+  deleteButton.disabled = true;
+  deleteButton.textContent = "جارٍ الحذف...";
+
+  const { data: deleted, error } = await db
+    .from("lovira_guests")
+    .delete()
+    .eq("id", guest.id)
+    .eq("event_id", eventId)
+    .select("id");
+
+  if (error || !deleted || deleted.length !== 1) {
+    alert(
+      "تعذر حذف الضيفة. تأكدي من صلاحيات الحذف في Supabase."
+    );
+    deleteButton.disabled = false;
+    deleteButton.textContent = "🗑️ حذف الضيفة";
+    return;
+  }
+
+  card.remove();
+  alert("تم حذف الضيفة بنجاح.");
+};
+
+card.append(name, info, button, deleteButton);
+
     list.appendChild(card);
   }
 };
