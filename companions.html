@@ -147,11 +147,9 @@ async function loadCompanions() {
           "\nيرجى إبراز الباركود عند الدخول:\n" +
           image.src;
 
-        window.open(
-          "https://wa.me/?text=" + encodeURIComponent(text),
-          "_blank",
-          "noopener"
-        );
+      window.location.href =
+  "https://api.whatsapp.com/send?text=" +
+  encodeURIComponent(text);
       };
 
       card.append(title, image, shareButton);
