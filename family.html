@@ -100,7 +100,11 @@ th { background: #f7f0f5; }
       <div id="guestLinks"></div>
     </section>
 
-    <section class="card">
+<section class="card">
+  <button type="button" onclick="document.getElementById('attendanceDetails').hidden = !document.getElementById('attendanceDetails').hidden">
+    📊 عرض / إخفاء متابعة الحضور
+  </button>
+  <div id="attendanceDetails" hidden>
       <h2>📊 متابعة الحضور</h2>
       <button id="refreshBtn">🔄 تحديث التقرير</button>
       <button id="downloadBtn" style="background:#39735b;">
@@ -109,6 +113,7 @@ th { background: #f7f0f5; }
       <div id="statistics" class="stats"></div>
       <div style="overflow-x:auto;margin-top:20px;">
         <table id="reportTable"></table>
+      </div>
       </div>
     </section>
   </div>
