@@ -250,7 +250,26 @@ document.getElementById("start-camera")
           processing = true;
 
           try {
-            const token = decodedText.trim();
+let token = decodedText.trim();
+
+if (token.startsWith("https://") ||
+    token.startsWith("http://")) {
+  const qrUrl = new URL(token);
+
+  if (qrUrl.origin !== window.location.origin ||
+      !qrUrl.pathname.endsWith("/reception.html")) {
+    throw new Error("رابط الباركود غير صالح");
+  }
+
+  token = qrUrl.searchParams.get("token") || "";
+}
+
+const uuidPattern =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+if (!uuidPattern.test(token)) {
+  throw new Error("رمز الباركود غير صالح");
+}
 
             const { data, error } = await db.rpc(
               "lovira_scan_ticket",
