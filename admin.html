@@ -599,6 +599,90 @@ function () {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 };
 
+document.getElementById("loadInvitationLinksBtn").onclick =
+async function () {
+  const eventId = document.getElementById("loviraEventSelect").value;
+  const list = document.getElementById("invitationLinksList");
+  const message = document.getElementById("invitationLinksMessage");
+
+  list.replaceChildren();
+
+  if (!eventId) {
+    message.textContent = "اختاري المناسبة أولًا.";
+    return;
+  }
+
+  message.textContent = "جارٍ تحميل روابط الدعوات...";
+
+  const { data: guests, error } = await db
+    .from("lovira_guests")
+    .select("guest_name,companions,qr_token")
+    .eq("event_id", eventId)
+    .order("guest_name");
+
+  if (error) {
+    message.textContent = "تعذر تحميل الروابط: " + error.message;
+    return;
+  }
+
+  if (!guests || !guests.length) {
+    message.textContent = "لا توجد ضيفات لهذه المناسبة.";
+    return;
+  }
+
+  for (const guest of guests) {
+    const url = new URL("invitation.html", location.href);
+    url.searchParams.set("guest", guest.qr_token);
+
+    const card = document.createElement("div");
+    card.style.cssText =
+      "padding:15px;margin:10px 0;border:1px solid #e5d5e0;border-radius:12px;";
+
+    const name = document.createElement("strong");
+    name.textContent = guest.guest_name;
+
+    const info = document.createElement("p");
+    info.textContent = "عدد المرافقات: " + guest.companions;
+
+    const whatsapp = document.createElement("button");
+    whatsapp.type = "button";
+    whatsapp.textContent = "💚 إرسال عبر واتساب";
+    whatsapp.style.background = "#258b61";
+
+    whatsapp.onclick = function () {
+      const text =
+        "💌 دعوة خاصة\n" +
+        "تفضلي رابط دعوتك:\n" +
+        url.href;
+
+      window.open(
+        "https://api.whatsapp.com/send?text=" +
+        encodeURIComponent(text),
+        "_blank"
+      );
+    };
+
+    const copy = document.createElement("button");
+    copy.type = "button";
+    copy.textContent = "📋 نسخ رابط الدعوة";
+
+    copy.onclick = async function () {
+      try {
+        await navigator.clipboard.writeText(url.href);
+        copy.textContent = "تم نسخ الرابط ✓";
+      } catch {
+        window.prompt("انسخي الرابط:", url.href);
+      }
+    };
+
+    card.append(name, info, whatsapp, copy);
+    list.appendChild(card);
+  }
+
+  message.textContent =
+    "تم تجهيز روابط " + guests.length + " ضيفة 💜";
+};
+
 </script>
 </body>
 </html>
