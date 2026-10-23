@@ -649,18 +649,19 @@ async function () {
     whatsapp.textContent = "💚 إرسال عبر واتساب";
     whatsapp.style.background = "#258b61";
 
-    whatsapp.onclick = function () {
-      const text =
-        "💌 دعوة خاصة\n" +
-        "تفضلي رابط دعوتك:\n" +
-        url.href;
+    
+whatsapp.onclick = function () {
+  const text =
+    "💌 دعوة خاصة\n" +
+    "تفضلي رابط دعوتك:\n" +
+    url.href;
 
-      window.open(
-        "https://api.whatsapp.com/send?text=" +
-        encodeURIComponent(text),
-        "_blank"
-      );
-    };
+  const whatsappUrl =
+    "https://wa.me/?text=" + encodeURIComponent(text);
+
+  window.location.href = whatsappUrl;
+};
+
 
     const copy = document.createElement("button");
     copy.type = "button";
