@@ -279,120 +279,24 @@ if (!uuidPattern.test(token)) {
             if (error) throw error;
 
             const status = data?.status;
-
+if (status === "success") {
+  if (data.ticket_type === "companion") {
+    showResult(
+      "✅ تم تسجيل دخول المرافقة\n" +
+      "المرافقة رقم: " + data.companion_number + "\n" +
+      "تابعة للضيفة: " + data.guest_name,
+      "success"
+    );
+  } else {
+    showResult(
+      "✅ تم تسجيل دخول الضيفة\n" +
+      "اسم الضيفة: " + data.guest_name,
+      "success"
+    );
+  }
             
-CREATE OR REPLACE FUNCTION public.lovira_scan_ticket(
-  p_token uuid
-)
-RETURNS jsonb
-LANGUAGE plpgsql
-SECURITY DEFINER
-SET search_path = ''
-AS $$
-DECLARE
-  v_guest RECORD;
-  v_companion RECORD;
-BEGIN
-  IF auth.uid() IS NULL THEN
-    RETURN jsonb_build_object(
-      'status', 'unauthorized',
-      'message', 'يجب تسجيل الدخول'
-    );
-  END IF;
 
-  SELECT g.*
-  INTO v_guest
-  FROM public.lovira_guests g
-  WHERE g.qr_token = p_token
-  FOR UPDATE;
 
-  IF FOUND THEN
-    IF NOT EXISTS (
-      SELECT 1
-      FROM public.lovira_receptionists r
-      WHERE r.user_id = auth.uid()
-        AND r.event_id = v_guest.event_id
-        AND r.is_active = TRUE
-    ) THEN
-      RETURN jsonb_build_object(
-        'status', 'forbidden',
-        'message', 'لا توجد صلاحية لهذه المناسبة'
-      );
-    END IF;
-
-    IF v_guest.is_used THEN
-      RETURN jsonb_build_object(
-        'status', 'already_used',
-        'message', 'باركود الضيفة مستخدم مسبقاً'
-      );
-    END IF;
-
-    UPDATE public.lovira_guests
-    SET is_used = TRUE,
-        used_at = now(),
-        checked_in = TRUE,
-        checked_in_at = now()
-    WHERE id = v_guest.id;
-
-    RETURN jsonb_build_object(
-      'status', 'success',
-      'ticket_type', 'guest',
-      'guest_name', v_guest.guest_name,
-      'companions', 0,
-      'message', 'تم تسجيل دخول الضيفة'
-    );
-  END IF;
-
-  SELECT c.*, g.guest_name, g.event_id
-  INTO v_companion
-  FROM public.lovira_companions c
-  JOIN public.lovira_guests g
-    ON g.id = c.guest_id
-  WHERE c.qr_token = p_token
-  FOR UPDATE OF c;
-
-  IF NOT FOUND THEN
-    RETURN jsonb_build_object(
-      'status', 'invalid',
-      'message', 'الباركود غير صالح'
-    );
-  END IF;
-
-  IF NOT EXISTS (
-    SELECT 1
-    FROM public.lovira_receptionists r
-    WHERE r.user_id = auth.uid()
-      AND r.event_id = v_companion.event_id
-      AND r.is_active = TRUE
-  ) THEN
-    RETURN jsonb_build_object(
-      'status', 'forbidden',
-      'message', 'لا توجد صلاحية لهذه المناسبة'
-    );
-  END IF;
-
-  IF v_companion.is_used THEN
-    RETURN jsonb_build_object(
-      'status', 'already_used',
-      'message', 'باركود المرافقة مستخدم مسبقاً'
-    );
-  END IF;
-
-  UPDATE public.lovira_companions
-  SET is_used = TRUE,
-      used_at = now()
-  WHERE id = v_companion.id;
-
-  RETURN jsonb_build_object(
-    'status', 'success',
-    'ticket_type', 'companion',
-    'guest_name', v_companion.guest_name,
-    'companion_number', v_companion.companion_number,
-    'companions', 0,
-    'message', 'تم تسجيل دخول المرافقة'
-  );
-END;
-$$;
 
 
             } else {
