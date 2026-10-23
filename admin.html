@@ -378,6 +378,218 @@ card.append(name, info, button, deleteButton);
   }
 };
 
+let loviraAttendanceRows = [];
+
+async function loadAttendanceReport() {
+  const eventId = document.getElementById("loviraEventSelect").value;
+  const msg = document.getElementById("attendanceMessage");
+  const summary = document.getElementById("attendanceSummary");
+  const table = document.getElementById("attendanceTable");
+
+  loviraAttendanceRows = [];
+  summary.replaceChildren();
+  table.replaceChildren();
+
+  if (!eventId) {
+    msg.textContent = "اختاري المناسبة أولًا.";
+    return;
+  }
+
+  msg.textContent = "جارٍ تحميل تقرير الحضور...";
+
+  const { data: guests, error: guestError } = await db
+    .from("lovira_guests")
+    .select("id,guest_name,companions,is_used,used_at")
+    .eq("event_id", eventId)
+    .order("guest_name");
+
+  if (guestError) {
+    msg.textContent = "تعذر تحميل الضيفات: " + guestError.message;
+    return;
+  }
+
+  const guestIds = (guests || []).map(g => g.id);
+  let companions = [];
+
+  if (guestIds.length) {
+    const { data, error } = await db
+      .from("lovira_companions")
+      .select("guest_id,is_used,used_at")
+      .in("guest_id", guestIds);
+
+    if (error) {
+      msg.textContent = "تعذر تحميل المرافقات: " + error.message;
+      return;
+    }
+
+    companions = data || [];
+  }
+
+  const companionMap = new Map();
+
+  for (const companion of companions) {
+    const stats = companionMap.get(companion.guest_id) || {
+      total: 0,
+      attended: 0
+    };
+
+    stats.total++;
+    if (companion.is_used) stats.attended++;
+
+    companionMap.set(companion.guest_id, stats);
+  }
+
+  loviraAttendanceRows = (guests || []).map(guest => {
+    const stats = companionMap.get(guest.id) || {
+      total: 0,
+      attended: 0
+    };
+
+    return {
+      "اسم الضيفة": guest.guest_name,
+      "عدد المرافقات": stats.total,
+      "حالة حضور الضيفة": guest.is_used ? "حضرت" : "لم تحضر",
+      "وقت دخول الضيفة": guest.used_at
+        ? new Date(guest.used_at).toLocaleString("ar-SA")
+        : "",
+      "المرافقات الحاضرات": stats.attended,
+      "المرافقات المتبقيات": stats.total - stats.attended
+    };
+  });
+
+  const totalGuests = loviraAttendanceRows.length;
+  const attendedGuests = loviraAttendanceRows.filter(
+    r => r["حالة حضور الضيفة"] === "حضرت"
+  ).length;
+
+  const totalCompanions = loviraAttendanceRows.reduce(
+    (sum, r) => sum + r["عدد المرافقات"], 0
+  );
+
+  const attendedCompanions = loviraAttendanceRows.reduce(
+    (sum, r) => sum + r["المرافقات الحاضرات"], 0
+  );
+
+  const statistics = [
+    ["إجمالي الضيفات", totalGuests],
+    ["الضيفات الحاضرات", attendedGuests],
+    ["الضيفات الغائبات", totalGuests - attendedGuests],
+    ["إجمالي المرافقات", totalCompanions],
+    ["المرافقات الحاضرات", attendedCompanions],
+    ["المرافقات المتبقيات", totalCompanions - attendedCompanions],
+    ["إجمالي الدخول", attendedGuests + attendedCompanions]
+  ];
+
+  const statsBox = document.createElement("div");
+  statsBox.style.cssText =
+    "display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;";
+
+  for (const [label, value] of statistics) {
+    const card = document.createElement("div");
+    card.style.cssText =
+      "padding:12px;background:#f7f0f5;border-radius:10px;text-align:center;";
+
+    const title = document.createElement("div");
+    title.textContent = label;
+
+    const number = document.createElement("strong");
+    number.textContent = value;
+    number.style.cssText = "display:block;font-size:23px;margin-top:6px;";
+
+    card.append(title, number);
+    statsBox.appendChild(card);
+  }
+
+  summary.appendChild(statsBox);
+
+  const headers = [
+    "اسم الضيفة",
+    "عدد المرافقات",
+    "حالة حضور الضيفة",
+    "وقت دخول الضيفة",
+    "المرافقات الحاضرات",
+    "المرافقات المتبقيات"
+  ];
+
+  const htmlTable = document.createElement("table");
+  htmlTable.style.cssText =
+    "width:100%;border-collapse:collapse;min-width:650px;margin-top:15px;";
+
+  const thead = document.createElement("thead");
+  const headerRow = document.createElement("tr");
+
+  for (const header of headers) {
+    const th = document.createElement("th");
+    th.textContent = header;
+    th.style.cssText =
+      "padding:10px;border:1px solid #e5d5e0;background:#f7f0f5;";
+    headerRow.appendChild(th);
+  }
+
+  thead.appendChild(headerRow);
+  htmlTable.appendChild(thead);
+
+  const tbody = document.createElement("tbody");
+
+  for (const row of loviraAttendanceRows) {
+    const tr = document.createElement("tr");
+
+    for (const header of headers) {
+      const td = document.createElement("td");
+      td.textContent = row[header];
+      td.style.cssText =
+        "padding:10px;border:1px solid #e5d5e0;text-align:center;";
+      tr.appendChild(td);
+    }
+
+    tbody.appendChild(tr);
+  }
+
+  htmlTable.appendChild(tbody);
+  table.appendChild(htmlTable);
+
+  msg.textContent = "تم تحميل التقرير بنجاح 💜";
+}
+
+document.getElementById("loadAttendanceBtn").onclick =
+  loadAttendanceReport;
+
+document.getElementById("downloadAttendanceBtn").onclick =
+function () {
+  if (!loviraAttendanceRows.length) {
+    alert("اعرضي تقرير الحضور أولًا.");
+    return;
+  }
+
+  const headers = Object.keys(loviraAttendanceRows[0]);
+
+  const escapeCsv = value => {
+    const text = String(value ?? "");
+    return '"' + text.replace(/"/g, '""') + '"';
+  };
+
+  const csv = [
+    headers.map(escapeCsv).join(","),
+    ...loviraAttendanceRows.map(row =>
+      headers.map(header => escapeCsv(row[header])).join(",")
+    )
+  ].join("\r\n");
+
+  const blob = new Blob(
+    ["\uFEFF" + csv],
+    { type: "text/csv;charset=utf-8;" }
+  );
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "LOVIRA-تقرير-الحضور.csv";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+};
+
 </script>
 </body>
 </html>
