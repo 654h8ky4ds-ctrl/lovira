@@ -113,10 +113,29 @@ small { color: #806b7c; }
       <p>سنضيف هنا إنشاء الروابط وإرسال واتساب.</p>
     </div>
 
-    <div class="card">
-      <h2>📊 متابعة الحضور</h2>
-      <p>سنضيف هنا حالات الدخول والباركودات.</p>
-    </div>
+    
+<div class="card">
+  <h2>📊 متابعة الحضور</h2>
+  <p>تقرير الحضور للمناسبة المختارة</p>
+
+  <button type="button" id="loadAttendanceBtn">
+    📊 عرض تقرير الحضور
+  </button>
+
+  <button type="button" id="downloadAttendanceBtn"
+    style="background:#39735b;">
+    📥 تحميل التقرير Excel
+  </button>
+
+  <p id="attendanceMessage"></p>
+
+  <div id="attendanceSummary"></div>
+
+  <div id="attendanceTable"
+    style="overflow-x:auto;margin-top:15px;">
+  </div>
+</div>
+
   </section>
 </main>
 
