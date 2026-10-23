@@ -370,6 +370,23 @@ a:focus-visible,
   <p>يرجى إبراز الرمز عند بوابة الحفل</p>
   <div id="loviraRealQr"></div>
   <div id="loviraQrMessage"></div>
+  <div id="loviraCompanionsButtonBox" hidden>
+  <button
+    type="button"
+    onclick="openLoviraCompanions()"
+    style="
+      margin-top:12px;
+      padding:8px 17px;
+      font:500 13px Tajawal,Tahoma,sans-serif;
+      border:1px solid #b99a64;
+      border-radius:25px;
+      background:#fff9ef;
+      color:#806844;
+      cursor:pointer;
+    ">
+    ▦ باركودات المرافقات
+  </button>
+</div>
   <p style="font-size:13px">الباركود مخصص للدعوة ويُستخدم حسب نظام الاستقبال.</p>
 </section>
 
@@ -440,8 +457,15 @@ const loviraSupabaseUrl =
 
 const loviraPublishableKey =
   "sb_publishable_G4b-jueJb1pAE2Kawm-R1Q_Hn7KEfAx";
+function openLoviraCompanions() {
+  if (!loviraGuestToken) return;
 
+  const url = new URL("companions.html", location.href);
+  url.searchParams.set("guest", loviraGuestToken);
+  window.location.href = url.href;
+}
 async function loadLoviraGuest() {
+ 
   const qrMessage=document.getElementById("loviraQrMessage");
 
   if(!loviraGuestToken) {
@@ -480,7 +504,8 @@ async function loadLoviraGuest() {
 
     document.getElementById("loviraGuestCompanions").textContent=
       String(guest.companions??0);
-
+document.getElementById("loviraCompanionsButtonBox").hidden =
+  Number(guest.companions ?? 0) <= 0;
     if(guest.qr_token) {
       const qrData=new URL("reception.html",location.href);
       qrData.searchParams.set("token",guest.qr_token);
