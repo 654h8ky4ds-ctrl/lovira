@@ -927,7 +927,8 @@ document.getElementById("lovira-guest-form")
 
     const guestName =
       document.getElementById("guest-name").value.trim();
-
+const companionCount =
+  Number(document.getElementById("companion-count").value);
     if (!loviraClient || !authorizedAdminId) {
       message.textContent = "يجب تسجيل دخول المشرفة أولًا.";
       return;
@@ -963,9 +964,10 @@ document.getElementById("lovira-guest-form")
       const { error } = await loviraClient
         .from("lovira_guests")
         .insert({
-          event_id: eventId,
-          guest_name: guestName
-        });
+  event_id: eventId,
+  guest_name: guestName,
+  companions: companionCount
+});
 
       if (error) {
         message.textContent =
