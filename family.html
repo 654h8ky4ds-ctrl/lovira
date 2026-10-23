@@ -1,0 +1,337 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LOVIRA | لوحة أم المعرس</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: #f7f0f5;
+  color: #56334f;
+  font-family: Tahoma, Arial, sans-serif;
+}
+header {
+  background: #56334f;
+  color: white;
+  text-align: center;
+  padding: 28px 15px;
+}
+header h1 { margin: 0 0 8px; }
+main {
+  max-width: 850px;
+  margin: 25px auto;
+  padding: 15px;
+}
+.card {
+  background: white;
+  padding: 22px;
+  border-radius: 18px;
+  margin-bottom: 20px;
+  box-shadow: 0 5px 20px #56334f12;
+}
+button {
+  width: 100%;
+  padding: 13px;
+  margin: 7px 0;
+  border: 0;
+  border-radius: 10px;
+  background: #754568;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+}
+button:disabled { opacity: .5; }
+.guest {
+  border: 1px solid #e5d5e0;
+  border-radius: 12px;
+  padding: 15px;
+  margin: 12px 0;
+}
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.stat {
+  background: #f7f0f5;
+  border-radius: 12px;
+  padding: 14px;
+  text-align: center;
+}
+.stat strong {
+  display: block;
+  font-size: 25px;
+  margin-top: 6px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 650px;
+}
+th, td {
+  padding: 10px;
+  border: 1px solid #e5d5e0;
+  text-align: center;
+}
+th { background: #f7f0f5; }
+#content { display: none; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>LOVIRA ♛</h1>
+  <div>لوحة أم المعرس</div>
+  <p id="eventTitle">زواج عايش علي</p>
+</header>
+
+<main>
+  <div id="accessMessage" class="card">
+    جارٍ التحقق من صلاحية الرابط...
+  </div>
+
+  <div id="content">
+    <section class="card">
+      <h2>💌 روابط الدعوات</h2>
+      <p>إرسال دعوات الضيفات عبر واتساب</p>
+      <div id="guestLinks"></div>
+    </section>
+
+    <section class="card">
+      <h2>📊 متابعة الحضور</h2>
+      <button id="refreshBtn">🔄 تحديث التقرير</button>
+      <button id="downloadBtn" style="background:#39735b;">
+        📥 تحميل التقرير Excel
+      </button>
+      <div id="statistics" class="stats"></div>
+      <div style="overflow-x:auto;margin-top:20px;">
+        <table id="reportTable"></table>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const db = supabase.createClient(
+  "https://ddfdkarrcijcubzoqxce.supabase.co",
+  "sb_publishable_G4b-jueJb1pAE2Kawm-R1Q_Hn7KEfAx"
+);
+
+const params = new URLSearchParams(location.search);
+const token = params.get("token");
+const uuidPattern =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+let guests = [];
+let eventName = "";
+
+async function loadFamilyData() {
+  const msg = document.getElementById("accessMessage");
+  document.getElementById("content").style.display = "none";
+
+  if (!token || !uuidPattern.test(token)) {
+    msg.textContent = "الرابط غير صالح. تواصلي مع منظّمة الدعوات.";
+    msg.style.display = "block";
+    return;
+  }
+
+  msg.textContent = "جارٍ تحميل بيانات المناسبة...";
+  msg.style.display = "block";
+
+  const { data, error } = await db.rpc("lovira_family_report", {
+    p_token: token
+  });
+
+  if (error || !data || data.status !== "success") {
+    msg.textContent = data?.message ||
+      "تعذر فتح الصفحة. تأكدي من صلاحية الرابط.";
+    return;
+  }
+
+  guests = data.guests || [];
+  eventName = data.event_name || "زواج عايش علي";
+
+  document.getElementById("eventTitle").textContent = eventName;
+  msg.style.display = "none";
+  document.getElementById("content").style.display = "block";
+
+  renderGuests();
+  renderReport();
+}
+
+function renderGuests() {
+  const list = document.getElementById("guestLinks");
+  list.replaceChildren();
+
+  if (!guests.length) {
+    list.textContent = "لا توجد ضيفات مسجلات.";
+    return;
+  }
+
+  for (const guest of guests) {
+    const card = document.createElement("div");
+    card.className = "guest";
+
+    const name = document.createElement("strong");
+    name.textContent = guest.guest_name;
+
+    const info = document.createElement("p");
+    info.textContent = "المرافقات: " + guest.companions;
+
+    const invitationUrl = new URL("invitation.html", location.href);
+    invitationUrl.searchParams.set("guest", guest.qr_token);
+
+    const whatsapp = document.createElement("button");
+    whatsapp.textContent = "💚 إرسال عبر واتساب";
+    whatsapp.style.background = "#258b61";
+
+    whatsapp.onclick = function () {
+      const text = "💌 دعوة خاصة\nتفضلي رابط دعوتك:\n" +
+        invitationUrl.href;
+      location.href = "https://wa.me/?text=" +
+        encodeURIComponent(text);
+    };
+
+    const copy = document.createElement("button");
+    copy.textContent = "📋 نسخ رابط الدعوة";
+
+    copy.onclick = async function () {
+      try {
+        await navigator.clipboard.writeText(invitationUrl.href);
+        copy.textContent = "تم النسخ ✓";
+      } catch {
+        prompt("انسخي الرابط:", invitationUrl.href);
+      }
+    };
+
+    card.append(name, info, whatsapp, copy);
+    list.appendChild(card);
+  }
+}
+
+function reportRows() {
+  return guests.map(g => ({
+    "اسم الضيفة": g.guest_name,
+    "عدد المرافقات": Number(g.companions || 0),
+    "حالة الضيفة": g.is_used ? "حضرت" : "لم تحضر",
+    "وقت دخول الضيفة": g.used_at
+      ? new Date(g.used_at).toLocaleString("ar-SA")
+      : "",
+    "المرافقات الحاضرات": Number(g.companions_attended || 0),
+    "المرافقات المتبقيات": Math.max(
+      0,
+      Number(g.companions || 0) -
+      Number(g.companions_attended || 0)
+    )
+  }));
+}
+
+function renderReport() {
+  const rows = reportRows();
+  const stats = document.getElementById("statistics");
+  stats.replaceChildren();
+
+  const attendedGuests = guests.filter(g => g.is_used).length;
+  const totalCompanions = guests.reduce(
+    (s, g) => s + Number(g.companions || 0), 0
+  );
+  const attendedCompanions = guests.reduce(
+    (s, g) => s + Number(g.companions_attended || 0), 0
+  );
+
+  const items = [
+    ["إجمالي الضيفات", guests.length],
+    ["الضيفات الحاضرات", attendedGuests],
+    ["الضيفات الغائبات", guests.length - attendedGuests],
+    ["إجمالي المرافقات", totalCompanions],
+    ["المرافقات الحاضرات", attendedCompanions],
+    ["المرافقات المتبقيات",
+      totalCompanions - attendedCompanions],
+    ["إجمالي الدخول", attendedGuests + attendedCompanions]
+  ];
+
+  for (const [label, value] of items) {
+    const box = document.createElement("div");
+    box.className = "stat";
+
+    const title = document.createElement("div");
+    title.textContent = label;
+
+    const number = document.createElement("strong");
+    number.textContent = value;
+
+    box.append(title, number);
+    stats.appendChild(box);
+  }
+
+  const table = document.getElementById("reportTable");
+  table.replaceChildren();
+
+  const headers = [
+    "اسم الضيفة", "عدد المرافقات", "حالة الضيفة",
+    "وقت دخول الضيفة", "المرافقات الحاضرات",
+    "المرافقات المتبقيات"
+  ];
+
+  const headerRow = document.createElement("tr");
+  for (const h of headers) {
+    const th = document.createElement("th");
+    th.textContent = h;
+    headerRow.appendChild(th);
+  }
+  table.appendChild(headerRow);
+
+  for (const row of rows) {
+    const tr = document.createElement("tr");
+    for (const h of headers) {
+      const td = document.createElement("td");
+      td.textContent = row[h];
+      tr.appendChild(td);
+    }
+    table.appendChild(tr);
+  }
+}
+
+document.getElementById("refreshBtn").onclick = loadFamilyData;
+
+document.getElementById("downloadBtn").onclick = function () {
+  const rows = reportRows();
+  if (!rows.length) {
+    alert("لا توجد بيانات للتحميل.");
+    return;
+  }
+
+  const headers = Object.keys(rows[0]);
+  const csvCell = value =>
+    '"' + String(value ?? "").replace(/"/g, '""') + '"';
+
+  const csv = [
+    headers.map(csvCell).join(","),
+    ...rows.map(row =>
+      headers.map(h => csvCell(row[h])).join(",")
+    )
+  ].join("\r\n");
+
+  const blob = new Blob(
+    ["\uFEFF" + csv],
+    { type: "text/csv;charset=utf-8;" }
+  );
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "LOVIRA-تقرير-زواج-عايش.csv";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+};
+
+loadFamilyData();
+</script>
+</body>
+</html>
