@@ -377,9 +377,14 @@ deleteButton.onclick = async function () {
     return;
   }
 
-  card.remove();
-  alert("تم حذف الضيفة بنجاح.");
-};
+  
+card.remove();
+
+// تحديث تقرير الحضور بعد حذف الضيفة
+await loadAttendanceReport();
+
+alert("تم حذف الضيفة وتحديث تقرير الحضور بنجاح 💜");
+
 
 card.append(name, info, button, deleteButton);
 
