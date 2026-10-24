@@ -253,9 +253,19 @@ event_id: eventId,
       return;
     }
 
-    message.textContent = "تمت إضافة الضيفة بنجاح 💜";
-    document.getElementById("loviraGuestForm").reset();
-  });
+    
+message.textContent = "تمت إضافة الضيفة بنجاح 💜";
+
+// تحديث تقرير الحضور تلقائيًا
+await loadAttendanceReport();
+
+// تحديث قائمة الضيفات
+document.getElementById("loadGuestsBtn").click();
+
+// تفريغ اسم الضيفة وعدد المرافقات فقط
+document.getElementById("newGuestName").value = "";
+document.getElementById("newGuestCompanions").value = "0";
+
 
 async function loadLoviraEvents() {
   const select = document.getElementById("loviraEventSelect");
