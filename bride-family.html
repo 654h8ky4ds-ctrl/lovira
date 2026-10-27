@@ -1,0 +1,250 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LOVIRA | لوحة أم العروس</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;background:#faf7f1;color:#44372c;font-family:Tahoma,Arial,sans-serif}
+    header{background:#fff;border-bottom:1px solid #e9dfd0;text-align:center;padding:25px 15px}
+    header h1{margin:0;color:#aa8650;letter-spacing:3px;font-size:29px}
+    header p{margin:9px 0 0;font-size:14px}
+    main{max-width:780px;margin:25px auto;padding:0 15px}
+    .card{background:#fff;border:1px solid #e9dfd0;border-radius:17px;padding:20px;margin-bottom:18px;box-shadow:0 4px 18px #00000008}
+    h2{font-size:19px;margin:0 0 18px;color:#997540}
+    input{width:100%;padding:13px;border:1px solid #ddd3c4;border-radius:10px;margin:7px 0;font-size:16px;background:#fff}
+    button{border:0;border-radius:10px;padding:12px 16px;font-size:14px;cursor:pointer;font-family:inherit}
+    .primary{background:#a7834c;color:white;width:100%;margin-top:10px}
+    .secondary{background:#f1e9dc;color:#695032}
+    .danger{background:#fff0ed;color:#a13f32}
+    .guest{border-top:1px solid #eee5d9;padding:16px 0}
+    .guest strong{display:block;font-size:17px;margin-bottom:7px}
+    .muted{font-size:13px;color:#82766a}
+    .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px}
+    .actions button{flex:1}
+    .empty{text-align:center;color:#8a7d6c;padding:25px}
+    #message{margin:15px 0;text-align:center;font-size:14px}
+    .hidden{display:none}
+    .count{background:#f5eee3;border-radius:10px;padding:12px;text-align:center;margin-bottom:15px}
+    a.share{display:inline-block;background:#e8f5e9;color:#176c35;text-decoration:none;padding:12px;border-radius:10px;margin-top:8px}
+  </style>
+</head>
+<body>
+<header>
+  <h1>LOVIRA</h1>
+  <p>لوحة إدارة ضيفات أم العروس</p>
+</header>
+
+<main>
+  <div id="message">جارٍ التحقق من صلاحية الرابط...</div>
+
+  <div id="panel" class="hidden">
+    <section class="card">
+      <h2>إضافة ضيفة جديدة</h2>
+      <form id="addForm">
+        <input id="guestName" placeholder="اسم الضيفة" maxlength="150" required>
+        <input id="companions" type="number" min="0" max="20" value="0" required>
+        <button class="primary" type="submit">إضافة الضيفة</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>قائمة ضيفات العروس</h2>
+      <div id="count" class="count"></div>
+      <button class="secondary" onclick="loadGuests()">تحديث القائمة</button>
+      <div id="guestList"></div>
+    </section>
+  </div>
+</main>
+
+<script>
+const SUPABASE_URL = "https://ddfdkarrcijcubzoqxce.supabase.co";
+const SUPABASE_KEY = "sb_publishable_G4b-jueJb1pAE2Kawm-R1Q_Hn7KEfAx";
+
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+const params = new URLSearchParams(location.search);
+const token = params.get("token");
+
+const message = document.getElementById("message");
+const panel = document.getElementById("panel");
+const guestList = document.getElementById("guestList");
+
+function notify(text) {
+  message.textContent = text;
+}
+
+function makeButton(label, className, callback) {
+  const btn = document.createElement("button");
+  btn.textContent = label;
+  btn.className = className;
+  btn.type = "button";
+  btn.addEventListener("click", callback);
+  return btn;
+}
+
+async function callRpc(name, args) {
+  const { data, error } = await db.rpc(name, args);
+  if (error) throw new Error(error.message);
+  return data;
+}
+
+async function loadGuests() {
+  try {
+    const data = await callRpc("lovira_bride_guests", {
+      p_token: token
+    });
+
+    if (!data || data.status !== "success") {
+      panel.classList.add("hidden");
+      notify("الرابط غير صالح أو انتهت صلاحيته");
+      return;
+    }
+
+    panel.classList.remove("hidden");
+    notify("");
+
+    const guests = data.guests || [];
+    document.getElementById("count").textContent =
+      "عدد الضيفات: " + guests.length;
+
+    guestList.replaceChildren();
+
+    if (!guests.length) {
+      const empty = document.createElement("div");
+      empty.className = "empty";
+      empty.textContent = "لا توجد ضيفات مسجلات حتى الآن";
+      guestList.appendChild(empty);
+      return;
+    }
+
+    guests.forEach(g => {
+      const item = document.createElement("div");
+      item.className = "guest";
+
+      const name = document.createElement("strong");
+      name.textContent = g.guest_name;
+
+      const info = document.createElement("div");
+      info.className = "muted";
+      info.textContent =
+        "المرافقات: " + g.companions +
+        " | الدخول: " + (g.is_used ? "تم" : "لم يتم");
+
+      const actions = document.createElement("div");
+      actions.className = "actions";
+
+      actions.appendChild(
+        makeButton("تعديل الاسم", "secondary", () => editGuest(g))
+      );
+
+      actions.appendChild(
+        makeButton("حذف", "danger", () => deleteGuest(g))
+      );
+
+      item.append(name, info, actions);
+      guestList.appendChild(item);
+    });
+
+  } catch (err) {
+    notify("تعذر تحميل الضيفات: " + err.message);
+  }
+}
+
+document.getElementById("addForm").addEventListener(
+  "submit",
+  async function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById("guestName").value.trim();
+    const companions = Number(
+      document.getElementById("companions").value
+    );
+
+    if (!name || !Number.isInteger(companions) ||
+        companions < 0 || companions > 20) {
+      notify("تحققي من الاسم وعدد المرافقات");
+      return;
+    }
+
+    try {
+      const result = await callRpc("lovira_bride_add_guest", {
+        p_token: token,
+        p_guest_name: name,
+        p_companions: companions
+      });
+
+      if (result.status !== "success") {
+        notify(result.message || "تعذرت الإضافة");
+        return;
+      }
+
+      this.reset();
+      document.getElementById("companions").value = 0;
+      notify("تمت إضافة الضيفة بنجاح");
+      await loadGuests();
+
+    } catch (err) {
+      notify("خطأ في الإضافة: " + err.message);
+    }
+  }
+);
+
+async function editGuest(g) {
+  const name = prompt("الاسم الجديد:", g.guest_name);
+  if (name === null) return;
+
+  if (!name.trim() || name.trim().length > 150) {
+    alert("اسم الضيفة غير صالح");
+    return;
+  }
+
+  try {
+    const result = await callRpc("lovira_bride_update_guest", {
+      p_token: token,
+      p_guest_id: g.id,
+      p_guest_name: name.trim()
+    });
+
+    alert(result.message || "اكتملت العملية");
+    if (result.status === "success") await loadGuests();
+
+  } catch (err) {
+    alert("تعذر التعديل: " + err.message);
+  }
+}
+
+async function deleteGuest(g) {
+  if (!confirm(
+    "هل أنتِ متأكدة من حذف " + g.guest_name +
+    " وجميع مرافقاتها؟ لا يمكن التراجع."
+  )) return;
+
+  try {
+    const result = await callRpc("lovira_bride_delete_guest", {
+      p_token: token,
+      p_guest_id: g.id
+    });
+
+    alert(result.message || "اكتملت العملية");
+    if (result.status === "success") await loadGuests();
+
+  } catch (err) {
+    alert("تعذر الحذف: " + err.message);
+  }
+}
+
+if (!token || !/^[0-9a-f-]{36}$/i.test(token)) {
+  notify("رابط الدخول غير مكتمل أو غير صالح");
+} else {
+  loadGuests();
+}
+</script>
+</body>
+</html>
