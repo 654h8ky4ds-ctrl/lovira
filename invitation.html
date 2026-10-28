@@ -279,6 +279,43 @@ a:focus-visible,
   .panel {padding:55px 18px}
   .hero-scene {min-height:620px}
 }
+  /* خلفية ستارة عاجية مموّجة لأقسام الدعوة */
+#invitationContent {
+  background-color: #eeeae1;
+  background-image:
+    repeating-linear-gradient(
+      98deg,
+      #d9d4ca 0px,
+      #f5f2eb 22px,
+      #fffdf8 38px,
+      #e7e3db 55px,
+      #f8f6f0 75px,
+      #d5d1c8 96px
+    );
+  background-size: 100% 100%;
+}
+
+#invitationContent .panel {
+  background: transparent;
+}
+
+/* الحفاظ على صورة القاعة في القسم الأول */
+#invitationContent .hero-scene {
+  background:
+    linear-gradient(
+      0deg,
+      #f9f2e9 2%,
+      #f9f2e9aa 35%,
+      transparent 80%
+    ),
+    url('https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1000&q=85')
+    center/cover;
+}
+
+/* خلفية الستارة تظهر أيضًا أسفل الدعوة */
+#invitationContent footer {
+  background: #eeeae1cc;
+}
 </style>
 </head>
 
