@@ -147,7 +147,30 @@ async function loadGuests() {
       actions.appendChild(
         makeButton("حذف", "danger", () => deleteGuest(g))
       );
+const whatsapp = makeButton(
+  "💚 إرسال الدعوة عبر واتساب",
+  "secondary",
+  () => {
+    if (!g.qr_token) {
+      alert("رابط الدعوة غير متوفر لهذه الضيفة.");
+      return;
+    }
 
+    const invitationUrl = new URL("invitation.html", location.href);
+    invitationUrl.searchParams.set("guest", g.qr_token);
+
+    const text =
+      "💌 دعوة خاصة\nتفضلي رابط دعوتك:\n" +
+      invitationUrl.href;
+
+    window.location.href =
+      "https://wa.me/?text=" + encodeURIComponent(text);
+  }
+);
+
+whatsapp.style.background = "#258b61";
+whatsapp.style.color = "white";
+actions.appendChild(whatsapp);
       item.append(name, info, actions);
       guestList.appendChild(item);
     });
