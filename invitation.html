@@ -833,11 +833,129 @@ body {
 #invitationContent footer {
   background: #faf5ec !important;
 }
+  /* غلاف الدعوة: حمامة تحمل الظرف */
+#loviraEnvelope::before,
+#loviraEnvelope::after {
+  display: none !important;
+}
+
+.dove-carrier {
+  position: relative;
+  width: 300px;
+  height: 330px;
+  pointer-events: none;
+  direction: ltr;
+}
+
+/* حمامة واحدة فوق الظرف */
+#loviraEnvelope .carrier-bird {
+  top: 0;
+  left: 0;
+  bottom: auto;
+  right: auto;
+  width: 260px;
+  height: 240px;
+  opacity: 1;
+  z-index: 3;
+}
+
+/* طرف الظرف عند منقار الحمامة */
+.carried-envelope {
+  position: absolute;
+  top: 104px;
+  left: 190px;
+  width: 200px;
+  height: 132px;
+  transform-origin: top left;
+  transform: rotate(55deg);
+  background: #fdfaf4;
+  border: 1px solid #d8c7ae;
+  box-shadow: 0 8px 22px #49382f24;
+  z-index: 2;
+}
+
+/* طيات الظرف */
+.carried-envelope::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #f1e8da;
+  clip-path: polygon(0 100%, 0 12%, 50% 65%, 100% 12%, 100% 100%);
+}
+
+.carried-envelope::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #e8dccb;
+  clip-path: polygon(0 0, 100% 0, 50% 62%);
+  transform-origin: top center;
+  transition: transform 1.3s ease, opacity 1.3s ease;
+}
+
+/* الختم فوق طية الظرف */
+#loviraEnvelope .carried-envelope .entry-copy {
+  position: absolute;
+  left: 50%;
+  top: 58%;
+  width: 65px;
+  height: 65px;
+  transform: translate(-50%, -50%);
+  z-index: 4;
+}
+
+#loviraEnvelope .carried-envelope .entry-copy p {
+  font-size: 12px;
+}
+
+.opened .carried-envelope::after {
+  transform: perspective(600px) rotateX(160deg);
+  opacity: 0;
+}
+
+@media (max-width: 350px) {
+  .dove-carrier {
+    transform: scale(.85);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carried-envelope::after {
+    transition: none;
+  }
+}
 </style>
     <link rel="preload" as="image" href="invitation-background.png.jpg">
 <link rel="preload" as="image" href="birds-background.png.PNG">
 </head>
+<script>
+(() => {
+  const gate = document.getElementById("loviraEnvelope");
+  if (!gate || gate.querySelector(".dove-carrier")) return;
 
+  const seal = gate.querySelector(".entry-copy");
+
+  const carrier = document.createElement("div");
+  carrier.className = "dove-carrier";
+
+  const bird = document.createElement("div");
+  bird.className = "lovira-dove carrier-bird";
+  bird.setAttribute("aria-hidden", "true");
+  bird.innerHTML = `
+    <span class="dove-wing-left"></span>
+    <span class="dove-wing-right"></span>
+    <span class="dove-body"></span>
+  `;
+
+  const letter = document.createElement("div");
+  letter.className = "carried-envelope";
+
+  if (seal) letter.appendChild(seal);
+
+  carrier.append(letter, bird);
+  gate.appendChild(carrier);
+})();
+</script>
 <body>
 <main class="lovira">
 
