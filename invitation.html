@@ -676,6 +676,40 @@ body {
 .opened .entry-copy {
   transition: opacity 1.2s ease;
 }
+  /* حركة خلفية الصفحة الأولى */
+@keyframes firstPageMotion {
+   0%, 100% {
+    background-size: 100% 100%;
+  }
+  50% {
+    background-size: 104% 104%;
+  }
+}
+
+#invitationContent .hero-scene {
+  animation: firstPageMotion 12s ease-in-out infinite;
+}
+
+/* حركة خلفية الطيور */
+@keyframes birdsMotion {
+  from {
+    background-position: center 0;
+  }
+  to {
+    background-position: center 600px;
+  }
+}
+
+#invitationContent {
+  animation: birdsMotion 30s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #invitationContent,
+  #invitationContent .hero-scene {
+    animation: none;
+  }
+}
 </style>
 </head>
 
