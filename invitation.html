@@ -811,8 +811,8 @@ function openLoviraEnvelope() {
   window.setTimeout(() => {
     content.style.display = "block";
     gate.style.display = "none";
-    window.scrollTo({top:0,behavior:"instant"});
-  }, window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 50 : 1850);
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 50 : 2800);
 }
 
 const envelope = document.getElementById("loviraEnvelope");
