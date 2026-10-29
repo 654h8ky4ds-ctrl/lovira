@@ -632,6 +632,36 @@ body {
 .door-hint {
   z-index: 4;
 }
+  /* صفحة كلمات الدعوة */
+#invitationContent .wedding-message {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 70px 24px;
+}
+
+.wedding-message p {
+  margin: 5px 0;
+  font-family: Amiri, serif;
+  font-size: 23px;
+  line-height: 1.9;
+  color: #493a32;
+}
+
+.wedding-message .message-spacing {
+  height: 30px;
+}
+
+.wedding-message .mother-name {
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.wedding-message .groom-name {
+  font-size: 42px;
+  font-weight: 700;
+}
 </style>
 </head>
 
@@ -668,7 +698,17 @@ body {
 </section>
 
   <audio id="loviraMusic" src="wedding.mp3.mp3" preload="none"></audio>
+<section class="panel wedding-message">
+  <p>لحظات الفرح اختارت من العمر موعدًا</p>
+  <p>في ليلة زاهية يضوي الفرح بعالي سماها</p>
 
+  <div class="message-spacing"></div>
+
+  <p>تسعد وتتشرف</p>
+  <p class="mother-name">أم عايش</p>
+  <p>بدعوتكم لحضور حفل زفاف ابنها</p>
+  <p class="groom-name">عايش</p>
+</section>
 <section class="panel">
   <div class="eyebrow">اللحظات الجميلة</div>
   <h2>العد التنازلي</h2>
