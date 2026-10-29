@@ -1173,5 +1173,24 @@ async function submitLoviraRsvp() {
   }
 }
 </script>
+  <script>
+document.querySelectorAll(
+  "#invitationContent .panel:not(.hero-scene)"
+).forEach(panel => {
+  ["dove-one", "dove-two"].forEach(position => {
+    const bird = document.createElement("div");
+    bird.className = "lovira-dove " + position;
+    bird.setAttribute("aria-hidden", "true");
+
+    bird.innerHTML = `
+      <span class="dove-wing-left"></span>
+      <span class="dove-wing-right"></span>
+      <span class="dove-body"></span>
+    `;
+
+    panel.appendChild(bird);
+  });
+});
+</script>
 </body>
 </html>
