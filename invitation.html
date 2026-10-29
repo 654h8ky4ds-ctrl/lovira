@@ -303,6 +303,295 @@ a:focus-visible,
 #invitationContent footer {
   background: #eeeae1cc;
 }
+  /* تصميم الدعوة التجريبية */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Great+Vibes&display=swap');
+
+body {
+  background: #e9e4dd;
+  color: #403a35;
+}
+
+.lovira {
+  background: #f7f5f1;
+  box-shadow: 0 0 35px #00000015;
+}
+
+/* الغلاف */
+#loviraEnvelope {
+  background: #f5f3ef;
+}
+
+.door {
+  background: #f4f2ee;
+  border: 0;
+  box-shadow: none;
+}
+
+.door:after {
+  content: '';
+  border: 0;
+}
+
+.entry-copy {
+  background: #483b36;
+  border: 4px double #d2c2aa;
+  border-radius: 50%;
+  width: 105px;
+  height: 105px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.entry-copy h1 {
+  color: #f4eee4;
+  font-size: 34px;
+}
+
+.entry-copy p {
+  display: none;
+}
+
+.door-hint {
+  background: transparent;
+  color: #75685e;
+  font-size: 13px;
+}
+
+/* صفحات الدعوة */
+#invitationContent {
+  background: #f9f7f3;
+  color: #403a35;
+}
+
+#invitationContent .panel {
+  background: transparent;
+  border: 0;
+  padding: 65px 26px;
+  min-height: auto;
+}
+
+#invitationContent .hero-scene {
+  min-height: 85svh;
+  justify-content: center;
+  background: #f2efea;
+  padding: 80px 28px;
+}
+
+.hero-scene .eyebrow {
+  font-family: Amiri, serif;
+  font-size: 30px;
+  letter-spacing: 0;
+  color: #4c4039;
+}
+
+.hero-scene p {
+  font-family: Amiri, serif;
+  font-size: 26px;
+  line-height: 2;
+}
+
+.eyebrow {
+  color: #9b8874;
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+.panel h2 {
+  color: #4b3c34;
+  font-family: Amiri, serif;
+  font-size: 34px;
+}
+
+.panel p {
+  line-height: 2;
+}
+
+.ornament {
+  color: #ae9c88;
+}
+
+/* العد التنازلي */
+#loviraTimer {
+  gap: 4px;
+  margin: 30px 0;
+}
+
+.timer-cell {
+  background: transparent;
+  border: 0;
+  padding: 10px 0;
+}
+
+.timer-cell span {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: 38px;
+  color: #554a42;
+}
+
+.timer-cell small {
+  color: #8b7c6d;
+}
+
+/* الأزرار والبطاقة */
+.gold-btn {
+  background: #55423a;
+  color: #fff;
+  box-shadow: none;
+}
+
+.outline-btn {
+  background: transparent;
+  border-color: #a39180;
+  color: #55423a;
+}
+
+.guest-card {
+  background: #f5f1eb;
+  border-color: #d1c2b2;
+}
+
+#invitationContent footer {
+  background: #4b3932;
+  color: #f7f1e8;
+}
+  /* ختم شمع الدعوة */
+.entry-copy {
+  width: 105px;
+  height: 105px;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 4px solid #65483d;
+  border-radius: 45% 53% 47% 51% / 51% 45% 54% 47%;
+  background:
+    radial-gradient(circle at 35% 28%, #a97b65, transparent 42%),
+    radial-gradient(circle at 55% 60%, #704b3d, #3e2922 85%);
+  box-shadow:
+    0 8px 15px #30201955,
+    inset 0 2px 5px #e5bfa45c,
+    inset 0 -5px 9px #24140e88;
+}
+
+.entry-copy h1 {
+  color: #ead9c3;
+  font-size: 25px;
+  text-shadow: 0 2px 2px #302019;
+}
+
+.entry-copy p {
+  display: none;
+}
+  /* أسماء العروسين والتاريخ وزر الصوت */
+#invitationContent .hero-scene {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+}
+
+.couple-names {
+  font-family: Amiri, serif;
+  font-size: 48px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: #3f3430;
+}
+
+.wedding-date {
+  direction: ltr;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  letter-spacing: 4px;
+  color: #6d5b50;
+}
+
+.sound-button {
+  width: 48px;
+  height: 48px;
+  border: 0;
+  border-radius: 50%;
+  background: #49382f;
+  color: white;
+  font-size: 25px;
+  cursor: pointer;
+}
+  /* خلفية أول صفحة بعد فتح الدعوة */
+#invitationContent .hero-scene {
+  background: url("invitation-background.png.jpg") center center / cover no-repeat;
+}
+  /* الحرفان فوق أسماء العروسين */
+.couple-monogram {
+  font-family: Amiri, serif;
+  font-size: 58px;
+  line-height: 1;
+  color: #352b28;
+  margin-bottom: 20px;
+}
+
+.couple-monogram span {
+  font-size: 23px;
+  color: #8e7c6a;
+}
+
+/* خط أسماء العروسين */
+.couple-names {
+  font-family: Amiri, serif;
+  font-size: 48px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #352b28;
+}
+/* صورة ختم الشمع */
+.entry-copy {
+  width: 110px;
+  height: 110px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: url("wax-seal.png.PNG") center / contain no-repeat;
+  box-shadow: none;
+}
+  /* إظهار خلفية الثريا كاملة في أول صفحة */
+#invitationContent .hero-scene {
+  width: 100%;
+  min-height: 0;
+  aspect-ratio: 852 / 1846;
+  background-color: #f7f4ee;
+  background-image: url("invitation-background.png.jpg");
+  background-position: center;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+  /* الكتابة داخل ختم الشمع */
+.entry-copy p {
+  display: block;
+  margin: 0;
+  color: #f5e5ca;
+  font: 700 17px Amiri, serif;
+  text-align: center;
+  text-shadow: 0 1px 3px #2b1710;
+}
+  /* خلفية الطيور للأقسام بعد صفحة الثريا */
+#invitationContent {
+  background-color: #faf5ec;
+  background-image: url("birds-background.png.PNG");
+  background-position: center top;
+  background-size: 100% auto;
+  background-repeat: repeat-y;
+}
+
+#invitationContent .panel:not(.hero-scene) {
+  background: transparent;
+}
+
+#invitationContent footer {
+  background: transparent;
+}
 </style>
 </head>
 
@@ -313,8 +602,7 @@ a:focus-visible,
   <div class="door left"></div>
   <div class="door right"></div>
   <div class="entry-copy">
-   <p>دعوة زواج الشاب</p>
-    <h1>عايش</h1>
+<p>دعوة زواج</p>
 </div>
   <div class="door-hint">✦ اضغطي لفتح الدعوة ✦</div>
 </div>
@@ -322,18 +610,24 @@ a:focus-visible,
 <div id="invitationContent">
 
 <section class="panel hero-scene">
-  <div class="eyebrow">بكل حب وسرور</div>
-  <p>نتشرف بدعوتكم لمشاركتنا فرحة الزواج</p>
-  <div class="ornament">✧ ❦ ✧</div>
+<img src="monogram.png.PNG" alt="شعار عايش ومراحب" style="width:100px;height:100px;object-fit:contain;">
+  <div class="couple-names">
+    <div>عــايــش</div>
+    <div>مــراحــب</div>
+  </div>
+
+  <div class="wedding-date">27 · 11 · 2026</div>
+
+  <button
+    type="button"
+    class="sound-button"
+    onclick="toggleLoviraMusic()"
+    aria-label="تشغيل أو إيقاف الشيلة">
+    ♪
+  </button>
 </section>
 
-<section class="panel" id="loviraMusicSection">
-  <div class="eyebrow">أجواء الفرح</div>
-  <h2>شيلة المناسبة</h2>
-  <div class="music-disc"><span id="loviraRecord">◉</span></div>
-  <button class="gold-btn" id="loviraMusicButton" type="button" onclick="toggleLoviraMusic()">♫ تشغيل / إيقاف الشيلة</button>
   <audio id="loviraMusic" src="wedding.mp3.mp3" preload="none"></audio>
-</section>
 
 <section class="panel">
   <div class="eyebrow">اللحظات الجميلة</div>
