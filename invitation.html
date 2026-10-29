@@ -1,7 +1,8 @@
 
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head>
+
+  <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>LOVIRA | دعوة زواج عايش علي</title>
@@ -811,7 +812,20 @@ body {
     animation: none !important;
   }
 }
+  #loviraEnvelope::after {
+  transition: transform 1.3s ease, opacity 1.3s ease;
+}
+
+.opened .entry-copy {
+  transition: opacity .5s ease;
+}
+
+#invitationContent {
+  animation: none !important;
+}
 </style>
+    <link rel="preload" as="image" href="invitation-background.png.jpg">
+<link rel="preload" as="image" href="birds-background.png.PNG">
 </head>
 
 <body>
@@ -961,7 +975,7 @@ function openLoviraEnvelope() {
     content.style.display = "block";
     gate.style.display = "none";
     window.scrollTo({ top: 0, behavior: "instant" });
-  }, window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 50 : 2800);
+  }, window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 50 : 1400);
 }
 
 const envelope = document.getElementById("loviraEnvelope");
