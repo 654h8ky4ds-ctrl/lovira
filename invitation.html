@@ -662,6 +662,20 @@ body {
   font-size: 42px;
   font-weight: 700;
 }
+  /* حركة فتح الظرف ببطء */
+#loviraEnvelope::after {
+  transform-origin: top center;
+  transition: transform 2.5s ease, opacity 2.5s ease;
+}
+
+.opened #loviraEnvelope::after {
+  transform: perspective(800px) rotateX(160deg);
+  opacity: 0;
+}
+
+.opened .entry-copy {
+  transition: opacity 1.2s ease;
+}
 </style>
 </head>
 
