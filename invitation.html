@@ -592,6 +592,46 @@ body {
 #invitationContent footer {
   background: transparent;
 }
+  /* ظرف الرسالة قبل فتح الدعوة */
+#loviraEnvelope {
+  background: #eee9e1;
+}
+
+#loviraEnvelope::before {
+  content: "";
+  position: absolute;
+  width: min(82%, 380px);
+  height: 240px;
+  background: #fdfaf4;
+  border: 1px solid #ded2c2;
+  box-shadow: 0 12px 35px #49382f2e;
+  z-index: 2;
+}
+
+#loviraEnvelope::after {
+  content: "";
+  position: absolute;
+  width: min(82%, 380px);
+  height: 240px;
+  background: #e9dfd1;
+  clip-path: polygon(0 0, 100% 0, 50% 58%);
+  z-index: 2;
+}
+
+/* إخفاء شكل البابين */
+.door {
+  display: none;
+}
+
+/* الختم فوق الظرف */
+.entry-copy {
+  z-index: 3;
+}
+
+/* تلميح فتح الدعوة */
+.door-hint {
+  z-index: 4;
+}
 </style>
 </head>
 
