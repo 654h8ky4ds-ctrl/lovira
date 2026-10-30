@@ -955,6 +955,27 @@ body {
     animation: none !important;
   }
 }
+  /* لا تظهر صفحات الدعوة قبل فتح الظرف */
+#invitationContent[hidden] {
+  display: none !important;
+}
+
+/* شاشة الظرف فقط عند الدخول */
+body:not(.opened) {
+  overflow: hidden;
+}
+
+#loviraEnvelope {
+  height: 100svh;
+  min-height: 0;
+}
+
+/* فتح الظرف ببطء */
+.carried-envelope::after {
+  transition:
+    transform 1.8s ease-in-out,
+    opacity 1.8s ease-in-out;
+}
 </style>
     <link rel="preload" as="image" href="invitation-background.png.jpg">
 <link rel="preload" as="image" href="birds-background.png.PNG">
@@ -986,7 +1007,7 @@ body {
 
   <div class="door-hint">✦ اضغطي لفتح الدعوة ✦</div>
 </div>
-
+<div id="invitationContent" hidden>
 <section class="panel hero-scene">
 <img src="monogram.png.PNG" alt="شعار عايش ومراحب" style="width:100px;height:100px;object-fit:contain;">
   <div class="couple-names">
@@ -1109,8 +1130,10 @@ body {
 </p>
 </footer>
 
-</div>
+</div> <!-- نهاية invitationContent -->
+</div> <!-- نهاية lovira -->
 </main>
+
 
 <script>
 let loviraOpening = false;
@@ -1124,11 +1147,17 @@ function openLoviraEnvelope() {
 
   document.body.classList.add("opened");
 
+  const reducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
   window.setTimeout(() => {
-    content.style.display = "block";
     gate.style.display = "none";
-    window.scrollTo({ top: 0, behavior: "instant" });
-  }, window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 50 : 1400);
+    content.hidden = false;
+    content.style.display = "block";
+
+    window.scrollTo(0, 0);
+  }, reducedMotion ? 50 : 1800);
 }
 
 const envelope = document.getElementById("loviraEnvelope");
