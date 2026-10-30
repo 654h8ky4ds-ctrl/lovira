@@ -833,71 +833,75 @@ body {
 #invitationContent footer {
   background: #faf5ec !important;
 }
-  /* غلاف الدعوة: حمامة تحمل الظرف */
+/* حمامة واحدة تحمل الظرف */
 #loviraEnvelope::before,
 #loviraEnvelope::after {
   display: none !important;
 }
 
-.dove-carrier {
+#loviraEnvelope .dove-carrier {
+  display: block !important;
   position: relative;
-  width: 300px;
-  height: 330px;
-  pointer-events: none;
+  width: 320px;
+  height: 360px;
+  flex: 0 0 320px;
   direction: ltr;
+  pointer-events: none;
 }
 
-/* حمامة واحدة فوق الظرف */
 #loviraEnvelope .carrier-bird {
+  position: absolute;
   top: 0;
-  left: 0;
-  bottom: auto;
+  left: 20px;
   right: auto;
+  bottom: auto;
   width: 260px;
   height: 240px;
   opacity: 1;
   z-index: 3;
 }
 
-/* طرف الظرف عند منقار الحمامة */
-.carried-envelope {
+/* زاوية الظرف تلتقي بمنقار الحمامة */
+#loviraEnvelope .carried-envelope {
   position: absolute;
   top: 104px;
-  left: 190px;
-  width: 200px;
-  height: 132px;
+  left: 215px;
+  width: 190px;
+  height: 130px;
   transform-origin: top left;
-  transform: rotate(55deg);
+  transform: rotate(65deg);
   background: #fdfaf4;
   border: 1px solid #d8c7ae;
   box-shadow: 0 8px 22px #49382f24;
   z-index: 2;
 }
 
-/* طيات الظرف */
-.carried-envelope::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: #f1e8da;
-  clip-path: polygon(0 100%, 0 12%, 50% 65%, 100% 12%, 100% 100%);
-}
-
+.carried-envelope::before,
 .carried-envelope::after {
   content: "";
   position: absolute;
   inset: 0;
+}
+
+.carried-envelope::before {
+  background: #f1e8da;
+  clip-path: polygon(
+    0 100%, 0 12%, 50% 65%,
+    100% 12%, 100% 100%
+  );
+}
+
+.carried-envelope::after {
   background: #e8dccb;
   clip-path: polygon(0 0, 100% 0, 50% 62%);
   transform-origin: top center;
   transition: transform 1.3s ease, opacity 1.3s ease;
 }
 
-/* الختم فوق طية الظرف */
 #loviraEnvelope .carried-envelope .entry-copy {
   position: absolute;
-  left: 50%;
   top: 58%;
+  left: 50%;
   width: 65px;
   height: 65px;
   transform: translate(-50%, -50%);
@@ -914,7 +918,7 @@ body {
 }
 
 @media (max-width: 350px) {
-  .dove-carrier {
+  #loviraEnvelope .dove-carrier {
     transform: scale(.85);
   }
 }
@@ -923,27 +927,6 @@ body {
   .carried-envelope::after {
     transition: none;
   }
-}
-  /* إرجاع الظرف الأصلي */
-#loviraEnvelope::before,
-#loviraEnvelope::after {
-  display: block !important;
-}
-
-/* إخفاء التركيب الجديد مؤقتًا */
-#loviraEnvelope .dove-carrier {
-  display: none !important;
-}
-
-/* إرجاع الختم إلى وسط الظرف */
-#loviraEnvelope .entry-copy {
-  position: absolute !important;
-  top: 50% !important;
-  left: 50% !important;
-  width: 110px !important;
-  height: 110px !important;
-  transform: translate(-50%, -50%) !important;
-  z-index: 5 !important;
 }
   #invitationContent footer,
 #invitationContent footer h2,
@@ -976,54 +959,33 @@ body {
     <link rel="preload" as="image" href="invitation-background.png.jpg">
 <link rel="preload" as="image" href="birds-background.png.PNG">
 </head>
-<script>
-(() => {
-  const gate = document.getElementById("loviraEnvelope");
-  if (!gate || gate.querySelector(".dove-carrier")) return;
 
-  const seal = gate.querySelector(".entry-copy");
-
-  const carrier = document.createElement("div");
-  carrier.className = "dove-carrier";
-
-  const bird = document.createElement("div");
-  bird.className = "lovira-dove carrier-bird";
-  bird.setAttribute("aria-hidden", "true");
-  bird.innerHTML = `
-    <span class="dove-wing-left"></span>
-    <span class="dove-wing-right"></span>
-    <span class="dove-body"></span>
-  `;
-
-  const letter = document.createElement("div");
-  letter.className = "carried-envelope";
-
-  if (seal) letter.appendChild(seal);
-
-  carrier.append(letter, bird);
-  gate.appendChild(carrier);
-})();
-</script>
-  <script>
-(() => {
-  const gate = document.getElementById("loviraEnvelope");
-  const seal = gate?.querySelector(".entry-copy");
-  if (seal) gate.appendChild(seal);
-})();
-</script>
 <body>
 <main class="lovira">
 
-<div id="loviraEnvelope" role="button" tabindex="0" aria-label="اضغطي لفتح دعوة زواج عايش">
-  <div class="door left"></div>
-  <div class="door right"></div>
-  <div class="entry-copy">
-<p>دعوة خاصة</p>
-</div>
+<div id="loviraEnvelope"
+     role="button"
+     tabindex="0"
+     aria-label="اضغطي لفتح دعوة زواج عايش">
+
+  <div class="dove-carrier">
+
+    <div class="carried-envelope">
+      <div class="entry-copy">
+        <p>دعوة خاصة</p>
+      </div>
+    </div>
+
+    <div class="lovira-dove carrier-bird" aria-hidden="true">
+      <span class="dove-wing-left"></span>
+      <span class="dove-wing-right"></span>
+      <span class="dove-body"></span>
+    </div>
+
+  </div>
+
   <div class="door-hint">✦ اضغطي لفتح الدعوة ✦</div>
 </div>
-
-<div id="invitationContent">
 
 <section class="panel hero-scene">
 <img src="monogram.png.PNG" alt="شعار عايش ومراحب" style="width:100px;height:100px;object-fit:contain;">
