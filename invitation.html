@@ -950,6 +950,28 @@ body {
 #invitationContent footer p {
   color: #69563f !important;
 }
+  #invitationContent .lovira-dove {
+  animation: doveFloat 3s ease-in-out infinite;
+}
+
+#invitationContent .lovira-dove.dove-two {
+  animation-delay: -1.5s;
+}
+
+@keyframes doveFloat {
+  0%, 100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #invitationContent .lovira-dove {
+    animation: none !important;
+  }
+}
 </style>
     <link rel="preload" as="image" href="invitation-background.png.jpg">
 <link rel="preload" as="image" href="birds-background.png.PNG">
