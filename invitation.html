@@ -924,6 +924,27 @@ body {
     transition: none;
   }
 }
+  /* إرجاع الظرف الأصلي */
+#loviraEnvelope::before,
+#loviraEnvelope::after {
+  display: block !important;
+}
+
+/* إخفاء التركيب الجديد مؤقتًا */
+#loviraEnvelope .dove-carrier {
+  display: none !important;
+}
+
+/* إرجاع الختم إلى وسط الظرف */
+#loviraEnvelope .entry-copy {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  width: 110px !important;
+  height: 110px !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 5 !important;
+}
 </style>
     <link rel="preload" as="image" href="invitation-background.png.jpg">
 <link rel="preload" as="image" href="birds-background.png.PNG">
@@ -954,6 +975,13 @@ body {
 
   carrier.append(letter, bird);
   gate.appendChild(carrier);
+})();
+</script>
+  <script>
+(() => {
+  const gate = document.getElementById("loviraEnvelope");
+  const seal = gate?.querySelector(".entry-copy");
+  if (seal) gate.appendChild(seal);
 })();
 </script>
 <body>
