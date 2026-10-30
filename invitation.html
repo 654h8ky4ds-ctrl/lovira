@@ -864,16 +864,16 @@ body {
 /* زاوية الظرف تلتقي بمنقار الحمامة */
 #loviraEnvelope .carried-envelope {
   position: absolute;
-  top: 104px;
-  left: 215px;
-  width: 190px;
-  height: 130px;
+  top: 106px;
+  left: 214px;
+  width: 140px;
+  height: 95px;
   transform-origin: top left;
-  transform: rotate(65deg);
+  transform: rotate(15deg);
   background: #fdfaf4;
   border: 1px solid #d8c7ae;
   box-shadow: 0 8px 22px #49382f24;
-  z-index: 2;
+  z-index: 4;
 }
 
 .carried-envelope::before,
@@ -975,6 +975,14 @@ body:not(.opened) {
   transition:
     transform 1.8s ease-in-out,
     opacity 1.8s ease-in-out;
+}
+  #loviraEnvelope .carried-envelope .entry-copy {
+  width: 48px;
+  height: 48px;
+}
+
+#loviraEnvelope .carried-envelope .entry-copy p {
+  font-size: 10px;
 }
 </style>
     <link rel="preload" as="image" href="invitation-background.png.jpg">
