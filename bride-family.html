@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -15,9 +14,7 @@
     main{max-width:780px;margin:25px auto;padding:0 15px}
     .card{background:#fff;border:1px solid #e9dfd0;border-radius:17px;padding:20px;margin-bottom:18px;box-shadow:0 4px 18px #00000008}
     h2{font-size:19px;margin:0 0 18px;color:#997540}
-    input{width:100%;padding:13px;border:1px solid #ddd3c4;border-radius:10px;margin:7px 0;font-size:16px;background:#fff}
     button{border:0;border-radius:10px;padding:12px 16px;font-size:14px;cursor:pointer;font-family:inherit}
-    .primary{background:#a7834c;color:white;width:100%;margin-top:10px}
     .secondary{background:#f1e9dc;color:#695032}
     .danger{background:#fff0ed;color:#a13f32}
     .guest{border-top:1px solid #eee5d9;padding:16px 0}
@@ -29,7 +26,6 @@
     #message{margin:15px 0;text-align:center;font-size:14px}
     .hidden{display:none}
     .count{background:#f5eee3;border-radius:10px;padding:12px;text-align:center;margin-bottom:15px}
-    a.share{display:inline-block;background:#e8f5e9;color:#176c35;text-decoration:none;padding:12px;border-radius:10px;margin-top:8px}
   </style>
 </head>
 <body>
@@ -43,18 +39,11 @@
 
   <div id="panel" class="hidden">
     <section class="card">
-      <h2>إضافة ضيفة جديدة</h2>
-      <form id="addForm">
-        <input id="guestName" placeholder="اسم الضيفة" maxlength="150" required>
-        <input id="companions" type="number" min="0" max="20" value="0" required>
-        <button class="primary" type="submit">إضافة الضيفة</button>
-      </form>
-    </section>
-
-    <section class="card">
       <h2>قائمة ضيفات العروس</h2>
       <div id="count" class="count"></div>
-      <button class="secondary" onclick="loadGuests()">تحديث القائمة</button>
+      <button class="secondary" type="button" onclick="loadGuests()">
+        تحديث القائمة
+      </button>
       <div id="guestList"></div>
     </section>
   </div>
@@ -147,30 +136,35 @@ async function loadGuests() {
       actions.appendChild(
         makeButton("حذف", "danger", () => deleteGuest(g))
       );
-const whatsapp = makeButton(
-  "💚 إرسال الدعوة عبر واتساب",
-  "secondary",
-  () => {
-    if (!g.qr_token) {
-      alert("رابط الدعوة غير متوفر لهذه الضيفة.");
-      return;
-    }
 
-    const invitationUrl = new URL("invitation.html", location.href);
-    invitationUrl.searchParams.set("guest", g.qr_token);
+      const whatsapp = makeButton(
+        "💚 إرسال الدعوة عبر واتساب",
+        "secondary",
+        () => {
+          if (!g.qr_token) {
+            alert("رابط الدعوة غير متوفر لهذه الضيفة.");
+            return;
+          }
 
-    const text =
-      "💌 دعوة خاصة\nتفضلي رابط دعوتك:\n" +
-      invitationUrl.href;
+          const invitationUrl = new URL(
+            "invitation.html",
+            location.href
+          );
+          invitationUrl.searchParams.set("guest", g.qr_token);
 
-    window.location.href =
-      "https://wa.me/?text=" + encodeURIComponent(text);
-  }
-);
+          const text =
+            "💌 دعوة خاصة\nتفضلي رابط دعوتك:\n" +
+            invitationUrl.href;
 
-whatsapp.style.background = "#258b61";
-whatsapp.style.color = "white";
-actions.appendChild(whatsapp);
+          window.location.href =
+            "https://wa.me/?text=" + encodeURIComponent(text);
+        }
+      );
+
+      whatsapp.style.background = "#258b61";
+      whatsapp.style.color = "white";
+      actions.appendChild(whatsapp);
+
       item.append(name, info, actions);
       guestList.appendChild(item);
     });
@@ -179,45 +173,6 @@ actions.appendChild(whatsapp);
     notify("تعذر تحميل الضيفات: " + err.message);
   }
 }
-
-document.getElementById("addForm").addEventListener(
-  "submit",
-  async function(e) {
-    e.preventDefault();
-
-    const name = document.getElementById("guestName").value.trim();
-    const companions = Number(
-      document.getElementById("companions").value
-    );
-
-    if (!name || !Number.isInteger(companions) ||
-        companions < 0 || companions > 20) {
-      notify("تحققي من الاسم وعدد المرافقات");
-      return;
-    }
-
-    try {
-      const result = await callRpc("lovira_bride_add_guest", {
-        p_token: token,
-        p_guest_name: name,
-        p_companions: companions
-      });
-
-      if (result.status !== "success") {
-        notify(result.message || "تعذرت الإضافة");
-        return;
-      }
-
-      this.reset();
-      document.getElementById("companions").value = 0;
-      notify("تمت إضافة الضيفة بنجاح");
-      await loadGuests();
-
-    } catch (err) {
-      notify("خطأ في الإضافة: " + err.message);
-    }
-  }
-);
 
 async function editGuest(g) {
   const name = prompt("الاسم الجديد:", g.guest_name);
