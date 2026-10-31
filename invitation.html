@@ -1479,6 +1479,42 @@ async function submitLoviraRsvp() {
     button.disabled=false;
   }
 }
+<script>
+(function () {
+  const gate = document.getElementById("loviraEnvelope");
+  const content = document.getElementById("invitationContent");
+  if (!gate || !content) return;
 
+  let opening = false;
+
+  function openInvitation() {
+    if (opening) return;
+    opening = true;
+
+    document.body.classList.add("opened");
+
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    window.setTimeout(function () {
+      gate.style.display = "none";
+      content.hidden = false;
+      content.style.display = "block";
+      document.body.style.overflow = "auto";
+      window.scrollTo(0, 0);
+    }, reducedMotion ? 0 : 1800);
+  }
+
+  gate.addEventListener("click", openInvitation);
+
+  gate.addEventListener("keydown", function (event) {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      openInvitation();
+    }
+  });
+})();
+</script>
 </body>
 </html>
