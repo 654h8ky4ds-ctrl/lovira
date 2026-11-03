@@ -341,5 +341,96 @@ loadFamilyData();
   
 <script src="rsvp-family.js"></script>
 
+<style>
+#familyMenu {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+#familyMenu button {
+  min-height: 75px;
+  font-size: 17px;
+  background: #754568;
+}
+#familyMenu button.active {
+  background: #56334f;
+  box-shadow: inset 0 0 0 2px #d6b58d;
+}
+#familyGuestsPane[hidden],
+#familyReportsPane[hidden] {
+  display: none !important;
+}
+</style>
+
+<script>
+(function () {
+  function setupFamilyMenu() {
+    const content = document.getElementById("content");
+    const guestSection =
+      document.getElementById("guestLinks")?.closest("section");
+    const reportSection =
+      document.getElementById("attendanceDetails")?.closest("section");
+    const rsvpSection =
+      document.getElementById("lovira-rsvp-family");
+
+    if (!content || !guestSection || !reportSection) return;
+    if (document.getElementById("familyMenu")) return;
+
+    const menu = document.createElement("div");
+    menu.id = "familyMenu";
+
+    const guestsBtn = document.createElement("button");
+    guestsBtn.type = "button";
+    guestsBtn.textContent = "💌 جميع الضيفات";
+
+    const reportsBtn = document.createElement("button");
+    reportsBtn.type = "button";
+    reportsBtn.textContent = "📊 التقرير";
+
+    menu.append(guestsBtn, reportsBtn);
+
+    const guestsPane = document.createElement("div");
+    guestsPane.id = "familyGuestsPane";
+    guestsPane.hidden = true;
+    guestsPane.appendChild(guestSection);
+
+    const reportsPane = document.createElement("div");
+    reportsPane.id = "familyReportsPane";
+    reportsPane.hidden = true;
+    reportsPane.appendChild(reportSection);
+
+    if (rsvpSection) {
+      reportsPane.appendChild(rsvpSection);
+    }
+
+    content.prepend(menu, guestsPane, reportsPane);
+
+    function openPane(pane, button) {
+      const wasOpen = !pane.hidden;
+
+      guestsPane.hidden = true;
+      reportsPane.hidden = true;
+      guestsBtn.classList.remove("active");
+      reportsBtn.classList.remove("active");
+
+      if (!wasOpen) {
+        pane.hidden = false;
+        button.classList.add("active");
+      }
+    }
+
+    guestsBtn.onclick = () => openPane(guestsPane, guestsBtn);
+    reportsBtn.onclick = () => openPane(reportsPane, reportsBtn);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupFamilyMenu);
+  } else {
+    setupFamilyMenu();
+  }
+})();
+</script>
+
 </body>
 </html>
